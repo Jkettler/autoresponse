@@ -3,12 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
+    <Button
+        android:id="@+id/create_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="teststring"
-        tools:context=".MainActivity" />
+        android:onClick="createEvent"
+        android:text="@string/create_event" />
+
+    <Button
+        android:id="@+id/view_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/create_event_button"
+        android:layout_alignLeft="@+id/create_event_button"
+        android:layout_alignRight="@+id/create_event_button"
+        android:layout_centerHorizontal="true"
+        android:onClick="viewEvents"
+        android:text="@string/view_events" />
+
+    <Button
+        android:id="@+id/exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/create_event_button"
+        android:layout_alignRight="@+id/create_event_button"
+        android:layout_below="@+id/create_event_button"
+        android:layout_centerHorizontal="true"
+        android:onClick="exitApp"
+        android:text="@string/exit" />
 
 </RelativeLayout>

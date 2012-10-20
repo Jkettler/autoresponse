@@ -20,6 +20,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EventListActivity"
+            android:label="@string/title_activity_event_list" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="autoresponse.app.HomeScreenActivity" />
+        </activity>
+        <activity
+            android:name=".ConditionSelectorActivity"
+            android:label="@string/title_activity_condition_selector" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ResponseSelectorActivity"
+            android:label="@string/title_activity_response_selector" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
