@@ -34,6 +34,7 @@ public class ConditionSelectorActivity extends Activity {
 		CheckBox locationBox = (CheckBox) findViewById(R.id.location_checkbox);
 		CheckBox timeBox = (CheckBox) findViewById(R.id.time_checkbox);
 		CheckBox dayBox = (CheckBox) findViewById(R.id.day_checkbox);
+		CheckBox incomingTextBox = (CheckBox) findViewById(R.id.incoming_text_checkbox);
 		TimePicker startTimePicker = (TimePicker) findViewById(R.id.start_time_picker);
 		TimePicker endTimePicker = (TimePicker) findViewById(R.id.end_time_picker);
 		
@@ -45,27 +46,35 @@ public class ConditionSelectorActivity extends Activity {
 			return;
 		}
 
-		boolean input = drivingBox.isChecked() || locationBox.isChecked() || timeBox.isChecked() || dayBox.isChecked();
-		
+		boolean input = drivingBox.isChecked() || locationBox.isChecked() || timeBox.isChecked() || dayBox.isChecked() || incomingTextBox.isChecked();
 		if (!input) {
 			// If nothing is given as input, stay in activity and put up a toast
 			Toast.makeText(getApplicationContext(),	"Please provide a context.", Toast.LENGTH_SHORT).show();
-		} else if (locationBox.isChecked()) {
-			// Go to location selector
+			return;
+		}
+		
+		Intent intent;
+		if (locationBox.isChecked()) {
+			//Go to location selector
 			Log.d(TAG, "Continue button was clicked with location checked.");
+			intent = new Intent(this, LocationSelectorActivity.class);
 		} else {
 			// Go to response selector
 			Log.d(TAG, "Continue button was clicked without location checked.");
-			
-			Intent intent = new Intent(this, ResponseSelectorActivity.class);
-			// TODO put info from condition into intent as extras
-			startActivity(intent);
+			intent = new Intent(this, ResponseSelectorActivity.class);
 		}
+		// TODO put info from condition into intent as extras, 
+		/*
+		 * look into parcelable interface, it might be easiest to make an event object
+		 *  that implements parcelable and just pass it around
+	 	 *	better yet, make an event builder that will do validation when build()
+		 *	is called at the end of the UI workflow
+		*/
+		startActivity(intent);
 	}
 
 	private boolean validTimeRange(TimePicker startTimePicker,
 			TimePicker endTimePicker) {
-		
 		
 		Calendar start = Calendar.getInstance();
 		start.set(Calendar.HOUR_OF_DAY, startTimePicker.getCurrentHour());

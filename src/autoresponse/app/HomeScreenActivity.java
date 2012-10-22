@@ -31,6 +31,8 @@ public class HomeScreenActivity extends Activity {
     
     public void createEvent(View view) {
     	Log.d(TAG, "Create event button clicked");
+    	//TODO Probably want a dialog to specify the name, 
+    	//the first wireframe draft didn't include anywhere to input one. 
     	Intent intent = new Intent(this, ConditionSelectorActivity.class);
     	startActivity(intent);
 	}
