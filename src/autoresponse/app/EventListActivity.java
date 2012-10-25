@@ -13,6 +13,9 @@ public class EventListActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+        //TODO pull in list of events from storage, populate list view, add listeners
+        //TODO inside listener, jump to event view
+        
     }
 
     @Override
