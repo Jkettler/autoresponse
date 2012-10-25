@@ -30,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="24dp"
-            android:text="@string/add_location" />
+            android:text="@string/add_location"
+            android:onClick="addLocation" />
 
         <Button
             android:id="@+id/select_location_button"
@@ -39,8 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/add_location_button"
             android:layout_alignRight="@+id/add_location_button"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="21dp"
+            android:layout_below="@+id/add_location_button"
             android:onClick="createResponse"
             android:text="@string/ok" />
 

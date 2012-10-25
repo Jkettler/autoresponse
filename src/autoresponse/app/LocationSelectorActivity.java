@@ -2,6 +2,7 @@ package autoresponse.app;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
@@ -38,5 +39,7 @@ public class LocationSelectorActivity extends Activity {
     	//TODO launch location creator
     	//Again, will need to pass data from previous activities around
     	//This will presumably just be whatever came from the condition selector
+    	Intent intent = new Intent(this, LocationCreatorActivity.class);
+    	startActivity(intent);
     }
 }
