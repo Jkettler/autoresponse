@@ -10,30 +10,31 @@
         android:layout_height="wrap_content"
         android:text="@string/change_phone_mode" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:id="@+id/phone_mode_radio"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:orientation="vertical" >
+        android:layout_marginLeft="30dp" >
 
-        <CheckBox
-            android:id="@+id/normal_checkbox"
+        <RadioButton
+            android:id="@+id/normal_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/normal" />
 
-        <CheckBox
-            android:id="@+id/silent_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/silent" />
-
-        <CheckBox
-            android:id="@+id/vibrate_checkbox"
+        <RadioButton
+            android:id="@+id/vibrate_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vibrate" />
-    </LinearLayout>
+
+        <RadioButton
+            android:id="@+id/silent_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/silent" />
+    </RadioGroup>
 
     <CheckBox
         android:id="@+id/reminder_checkbox"
@@ -52,5 +53,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_response_" />
+
+    <Button
+        android:id="@+id/create_event_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick=""
+        android:text="@string/ok" />
 
 </LinearLayout>
