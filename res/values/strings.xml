@@ -7,7 +7,11 @@
     <string name="create_event">Create Event</string>
     <string name="view_events">View Events</string>
     <string name="exit">Exit</string>
+
     <string name="title_activity_event_list">My Events:</string>
+    <string name="edit_response">Edit Response</string>
+    <string name="edit_conditions">Edit Conditions</string>
+    <string name="delete_event">Delete Event</string>
     <string name="back_to_home">Back To Home</string>
     
     <string name="title_activity_condition_selector">Select condition:</string>
