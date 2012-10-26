@@ -1,64 +1,69 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <CheckBox
-        android:id="@+id/phone_mode_checkbox"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/change_phone_mode" />
+        android:orientation="vertical" >
 
-    <RadioGroup
-        android:id="@+id/phone_mode_radio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp" >
-
-        <RadioButton
-            android:id="@+id/normal_radio"
+        <CheckBox
+            android:id="@+id/phone_mode_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/normal" />
+            android:text="@string/change_phone_mode" />
 
-        <RadioButton
-            android:id="@+id/vibrate_radio"
+        <RadioGroup
+            android:id="@+id/phone_mode_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/vibrate" />
+            android:layout_marginLeft="30dp" >
 
-        <RadioButton
-            android:id="@+id/silent_radio"
+            <RadioButton
+                android:id="@+id/normal_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/normal" />
+
+            <RadioButton
+                android:id="@+id/vibrate_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vibrate" />
+
+            <RadioButton
+                android:id="@+id/silent_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/silent" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/reminder_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/silent" />
-    </RadioGroup>
+            android:text="@string/reminder" />
 
-    <CheckBox
-        android:id="@+id/reminder_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reminder" />
+        <TimePicker
+            android:id="@+id/reminder_time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp" />
 
-    <TimePicker
-        android:id="@+id/reminder_time_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp" />
+        <CheckBox
+            android:id="@+id/text_response_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_response_" />
 
-    <CheckBox
-        android:id="@+id/text_response_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_response_" />
+        <Button
+            android:id="@+id/create_event_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="createEvent"
+            android:text="@string/ok" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/create_event_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick=""
-        android:text="@string/ok" />
-
-</LinearLayout>
+</ScrollView>
