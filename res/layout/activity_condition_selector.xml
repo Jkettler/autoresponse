@@ -1,74 +1,74 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <CheckBox
-        android:id="@+id/driving_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/driving" />
-
-    <CheckBox
-        android:id="@+id/location_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location" />
-
-    <CheckBox
-        android:id="@+id/time_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <!--
+        <CheckBox
+            android:id="@+id/driving_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/driving" />
+
+        <CheckBox
+            android:id="@+id/location_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location" />
+
+        <CheckBox
+            android:id="@+id/time_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <!--
         Despite my best efforts, this doesn't seem like it's going to fit, 
         buttons and a TimePickerDialog may be the way to go
-        -->
+            -->
 
-        <TimePicker
-            android:id="@+id/start_time_picker"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_weight=".5" />
+            <TimePicker
+                android:id="@+id/start_time_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight=".5" />
 
-        <TimePicker
-            android:id="@+id/end_time_picker"
-            android:layout_width="0dp"
+            <TimePicker
+                android:id="@+id/end_time_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight=".5" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/day_checkbox"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_weight=".5" />
+            android:text="@string/day" />
+
+        <CheckBox
+            android:id="@+id/incoming_text_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/incoming_text" />
+
+        <Button
+            android:id="@+id/condition_selector_continue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createCondition"
+            android:text="@string/continue_button_label" />
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/day_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/day" />
-
-    <CheckBox
-        android:id="@+id/incoming_text_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/incoming_text" />
-
-    <Button
-        android:id="@+id/condition_selector_continue_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="createCondition"
-        android:text="@string/continue_button_label" />
-
-</LinearLayout>
 </ScrollView>

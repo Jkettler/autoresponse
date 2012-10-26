@@ -32,6 +32,6 @@ public class LocationCreatorActivity extends Activity {
 				//Is the radius greater than zero and not too large (presumably there's going to be some reasonable limit)
 			//If not, throw up a toast and return
 		//Add new location to the storage
-		//Either launch the location selector or finish this activity
+		//Either launch the location selector or finish this activity, not sure which works better
 	}
 }
