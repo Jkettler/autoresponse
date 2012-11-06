@@ -7,7 +7,7 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class PreferenceGetter {
+public class PreferenceHandler {
 	
 	public static final int LATITUDE = 0;
 	public static final int LONGITUDE = 1;
@@ -45,8 +45,8 @@ public class PreferenceGetter {
 		return result;
 	}
 	
-	public static HashMap<String, Object> getLocationList(Context context) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+	public static HashMap<String, double[]> getLocationList(Context context) {
+		HashMap<String, double[]> result = new HashMap<String, double[]>();
 		SharedPreferences allLocationPrefs = context.getSharedPreferences(MyService.LOCATION_INDEX_FILE, MyService.MODE_PRIVATE);
 		Map<String, ?> locationMap = allLocationPrefs.getAll();
 		for(String key : locationMap.keySet()) {
