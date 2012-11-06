@@ -9,6 +9,10 @@ import android.content.SharedPreferences;
 
 public class PreferenceGetter {
 	
+	public static final int LATITUDE = 0;
+	public static final int LONGITUDE = 1;
+	public static final int RADIUS = 2;
+	
 	public static ArrayList<AutoResponseEvent> getEventList(Context context) {
 		ArrayList<AutoResponseEvent> result = new ArrayList<AutoResponseEvent>();
 		SharedPreferences allEventPrefs = context.getSharedPreferences(MyService.EVENT_INDEX_FILE, MyService.MODE_PRIVATE);
@@ -49,10 +53,12 @@ public class PreferenceGetter {
 			String locationFileName = (String)locationMap.get(key);
 			// get a file with info for each event
 			SharedPreferences locationPrefs = context.getSharedPreferences(locationFileName, context.MODE_PRIVATE);
-			result.put("latitude", locationPrefs.getFloat("latitude", 0));
-			result.put("longitude", locationPrefs.getFloat("longitude", 0));
-			result.put("radius", locationPrefs.getFloat("radius", 0));
-			result.put("name", locationFileName);
+			double[] data = new double[] {
+					locationPrefs.getFloat("latitude", 0),
+					locationPrefs.getFloat("longitude", 0),
+					locationPrefs.getFloat("radius", 0)
+			};
+			result.put(locationFileName, data);
 		}
 		return result;
 	}
