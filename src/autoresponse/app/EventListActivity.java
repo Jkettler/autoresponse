@@ -28,12 +28,6 @@ public class EventListActivity extends Activity {
         
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_event_list, menu);
-        return true;
-    }
-
     public void closeActivity(View view){
     	finish();
     }

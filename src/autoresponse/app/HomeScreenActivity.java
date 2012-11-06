@@ -17,12 +17,6 @@ public class HomeScreenActivity extends Activity {
         setContentView(R.layout.activity_home_screen);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_home_screen, menu);
-        return true;
-    }
-    
     public void viewEvents(View view){
     	Log.d(TAG, "View event button clicked");
     	Intent intent = new Intent(this, EventListActivity.class);

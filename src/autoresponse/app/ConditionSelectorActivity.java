@@ -22,13 +22,7 @@ public class ConditionSelectorActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_condition_selector);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_condition_selector, menu);
-		return true;
-	}
-
+	
 	public void createCondition(View view) {
 
 		//Beta TODO: disable the time pickers unless the corresponding checkbox is checked 

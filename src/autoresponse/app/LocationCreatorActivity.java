@@ -2,24 +2,25 @@ package autoresponse.app;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import autoresponse.util.AutoResponseEvent;
 
 public class LocationCreatorActivity extends Activity {
 
 	private static final String TAG = "LocationCreatorActivity";
 
+	AutoResponseEvent mEvent;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location_creator);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_location_creator, menu);
-		return true;
+		
+		Intent intent = getIntent();
+		mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
 	}
 
 	public void onAddCurrentLocation(View view) {
@@ -33,5 +34,7 @@ public class LocationCreatorActivity extends Activity {
 			//If not, throw up a toast and return
 		//Add new location to the storage
 		//Either launch the location selector or finish this activity, not sure which works better
+		Intent intent = new Intent(this, ResponseSelectorActivity.class);
+		startActivity(intent);
 	}
 }

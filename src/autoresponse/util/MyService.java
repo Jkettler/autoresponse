@@ -221,8 +221,8 @@ public class MyService extends Service {
 			// latitude and longitude (Stored in global variables here) to see if they
 			// are some arbitrary distance from the current location. Maybe .5 miles?
 			
-			//Riley's comment: Store locations in their own preferences file, definitely use lat and long
-			//also: radius
+			//Riley's comment: If we store locations in a preference file we can refer to them
+			// using their name like a primary key
 			
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
 		}
