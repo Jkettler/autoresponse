@@ -51,12 +51,10 @@ public class AutoResponseEvent implements Parcelable {
 		textResponse = parcel.readString();
 	}
 
-	@Override
 	public int describeContents() {
 		return 0;
 	}
 
-	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		// Given dest, make it a duplicate of this object
 		// by writing values to it, ie do dest.writeString(variable)

@@ -1,4 +1,4 @@
-package kpk297.androidservicetest;
+package autoresponse.util;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -108,7 +108,6 @@ public class MyService extends Service {
 		locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 		
 		locationListener = new LocationListener() {
-			@Override
 			public void onLocationChanged(Location location) {
 				// This is the method that will be called when the location has changed
 				latitude = location.getLatitude();
@@ -116,11 +115,8 @@ public class MyService extends Service {
 				makeToast("Location changed");
 			}
 			// Other methods are note used, but must be implemented.
-			@Override
 			public void onProviderDisabled(String provider) {}
-			@Override
 			public void onProviderEnabled(String provider) {}
-			@Override
 			public void onStatusChanged(String provider, int status,Bundle extras) {}
 		};
 		
@@ -223,6 +219,9 @@ public class MyService extends Service {
 			// instead of a string location. Then compare these values to the current
 			// latitude and longitude (Stored in global variables here) to see if they
 			// are some arbitrary distance from the current location. Maybe .5 miles?
+			
+			//Riley's comment: Store locations in their own preferences file, definitely use lat and long
+			//also: radius
 			
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
 		}
