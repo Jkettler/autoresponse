@@ -22,6 +22,15 @@ public class AutoResponseEvent implements Parcelable {
 	private String days;
 	private boolean ifLocation;
 	private String location;
+	private boolean ifRecieveText;
+
+	public boolean isIfRecieveText() {
+		return ifRecieveText;
+	}
+
+	public void setIfRecieveText(boolean ifRecieveText) {
+		this.ifRecieveText = ifRecieveText;
+	}
 
 	// Response instance variables
 	private boolean changePhoneMode;
@@ -46,6 +55,7 @@ public class AutoResponseEvent implements Parcelable {
 		days = parcel.readString();
 		ifLocation = parcel.readInt() == 0;
 		location = parcel.readString();
+		ifRecieveText = parcel.readInt() == 0;
 
 		changePhoneMode = parcel.readInt() == 0;
 		phoneMode = parcel.readInt();
@@ -82,7 +92,8 @@ public class AutoResponseEvent implements Parcelable {
 		dest.writeString(days);
 		dest.writeInt((ifLocation ? 0 : 1));
 		dest.writeString(location);
-
+		dest.writeInt((ifRecieveText ? 0 : 1));
+		
 		dest.writeInt((changePhoneMode ? 0 : 1));
 		dest.writeInt(phoneMode);
 		dest.writeInt((displayReminder ? 0 : 1));
