@@ -47,10 +47,10 @@ public class PreferenceGetter {
 	
 	public static ArrayList<double[]> getLocationList(Context context) {
 		ArrayList<double[]> result = new ArrayList<double[]>();
-		SharedPreferences allLocationPrefs = context.getSharedPreferences(MyService.EVENT_INDEX_FILE, MyService.MODE_PRIVATE);
-		Map<String, ?> eventMap = allLocationPrefs.getAll();
-		for(String key : eventMap.keySet()) {
-			String locationFileName = (String)eventMap.get(key);
+		SharedPreferences allLocationPrefs = context.getSharedPreferences(MyService.LOCATION_INDEX_FILE, MyService.MODE_PRIVATE);
+		Map<String, ?> locationMap = allLocationPrefs.getAll();
+		for(String key : locationMap.keySet()) {
+			String locationFileName = (String)locationMap.get(key);
 			// get a file with info for each event
 			SharedPreferences locationPrefs = context.getSharedPreferences(locationFileName, context.MODE_PRIVATE);
 			double[] location = new double[3];
