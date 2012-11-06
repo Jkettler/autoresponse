@@ -19,7 +19,7 @@ public class AutoResponseEvent implements Parcelable {
 	private int startMinuteOfDay;
 	private int endMinuteOfDay;
 	private boolean ifDay;
-	private List<Integer> days;
+	private String days;
 	private boolean ifLocation;
 	private String location;
 
@@ -43,7 +43,7 @@ public class AutoResponseEvent implements Parcelable {
 		startMinuteOfDay = parcel.readInt();
 		endMinuteOfDay = parcel.readInt();
 		ifDay = parcel.readInt() == 0;
-		parcel.readList(days, null);
+		days = parcel.readString();
 		ifLocation = parcel.readInt() == 0;
 		location = parcel.readString();
 
@@ -79,7 +79,7 @@ public class AutoResponseEvent implements Parcelable {
 		dest.writeInt(startMinuteOfDay);
 		dest.writeInt(endMinuteOfDay);
 		dest.writeInt((ifDay ? 0 : 1));
-		dest.writeList(days);
+		dest.writeString(days);
 		dest.writeInt((ifLocation ? 0 : 1));
 		dest.writeString(location);
 
@@ -160,11 +160,11 @@ public class AutoResponseEvent implements Parcelable {
 		this.ifDay = ifDay;
 	}
 
-	public List<Integer> getDays() {
+	public String getDays() {
 		return days;
 	}
 
-	public void setDays(List<Integer> days) {
+	public void setDays(String days) {
 		this.days = days;
 	}
 
