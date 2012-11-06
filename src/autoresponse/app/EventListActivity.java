@@ -26,16 +26,22 @@ public class EventListActivity extends Activity {
         //TODO pull in list of events from storage, populate list view, add listeners
         //TODO inside listener, jump to event view
         
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_event_list, menu);
-        return true;
+        
     }
 
     public void closeActivity(View view){
     	finish();
     }
     
+    public void editConditions(View view){
+    	//TODO get activity, put it in the intent, then launch activity
+    }
+    
+    public void editResponse(View view){
+    	//TODO get activity, put it in the intent, then launch activity
+    }
+    
+    public void deleteEvent(View view){
+    	//delete activity, restart service
+    }
 }
