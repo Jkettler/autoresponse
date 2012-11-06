@@ -1,17 +1,13 @@
 package autoresponse.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PreferenceGetter {
-	
-	// ints used to index arrays
-	public static final int LATITUDE = 0;
-	public static final int LONGITUDE = 1;
-	public static final int RADIUS = 3;
 	
 	public static ArrayList<AutoResponseEvent> getEventList(Context context) {
 		ArrayList<AutoResponseEvent> result = new ArrayList<AutoResponseEvent>();
@@ -45,19 +41,18 @@ public class PreferenceGetter {
 		return result;
 	}
 	
-	public static ArrayList<double[]> getLocationList(Context context) {
-		ArrayList<double[]> result = new ArrayList<double[]>();
+	public static HashMap<String, Object> getLocationList(Context context) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		SharedPreferences allLocationPrefs = context.getSharedPreferences(MyService.LOCATION_INDEX_FILE, MyService.MODE_PRIVATE);
 		Map<String, ?> locationMap = allLocationPrefs.getAll();
 		for(String key : locationMap.keySet()) {
 			String locationFileName = (String)locationMap.get(key);
 			// get a file with info for each event
 			SharedPreferences locationPrefs = context.getSharedPreferences(locationFileName, context.MODE_PRIVATE);
-			double[] location = new double[3];
-			location[LATITUDE] = locationPrefs.getFloat("latitude", 0);
-			location[LONGITUDE] = locationPrefs.getFloat("longitude", 0);
-			location[RADIUS] = locationPrefs.getFloat("radius", 0);
-			result.add(location);
+			result.put("latitude", locationPrefs.getFloat("latitude", 0));
+			result.put("longitude", locationPrefs.getFloat("longitude", 0));
+			result.put("radius", locationPrefs.getFloat("radius", 0));
+			result.put("name", locationFileName);
 		}
 		return result;
 	}
