@@ -210,8 +210,8 @@ public class MyService extends Service {
 			// assuming event.getDays() returns a list of days where
 			// Sunday = 1, Monday = 2, ...
 			int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-			List<Integer> days = event.getDays();
-			if(!days.contains(dayOfWeek)) {
+			String days = event.getDays();
+			if(days.charAt(dayOfWeek-1) == 0) {
 				return false;
 			}
 		}
