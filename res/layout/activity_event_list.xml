@@ -44,7 +44,7 @@
             android:layout_alignLeft="@+id/edit_conditions_button"
             android:layout_alignRight="@+id/edit_conditions_button"
             android:layout_below="@+id/edit_response_button"
-            android:onClick="editEvent"
+            android:onClick="deleteEvent"
             android:text="@string/delete_event" />
 
         <Button

@@ -25,8 +25,9 @@ public class ResponseSelectorActivity extends Activity {
 		// put the event in long term storage
 		// alert the service/whatever we're using to detect events
 
-		// TODO to go back to the home screen, use startActivity, but there's a
-		// flag that can be used to make it so you can't hit back and wind up
-		// here
+		// Go back to the home screen but pass a flag so that you can't hit back
+		// and wind up here.
+		Intent intent = new Intent(this, HomeScreenActivity.class);
+        startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 }
