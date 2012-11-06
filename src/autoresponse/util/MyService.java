@@ -24,6 +24,9 @@ import android.widget.Toast;
 public class MyService extends Service {
 	
 	// Global variables
+	public static final String LOCATION_INDEX_FILE = "location_index_prefs";
+	public static final String EVENT_INDEX_FILE = "event_index_prefs";
+	
 	private static final String TAG = "AUTO_RESPONSE";
 	private BroadcastReceiver timeReceiver = null;
 	private BroadcastReceiver smsReceiver = null;
