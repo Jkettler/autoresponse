@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -13,6 +15,7 @@ import android.support.v4.app.NavUtils;
 public class EventListActivity extends Activity {
 
 	private ListView mEventListView;
+	private String selectedFromList;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,12 @@ public class EventListActivity extends Activity {
           new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, items);
         
         mEventListView.setAdapter(adapter);
+        
+        mEventListView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
+              selectedFromList =(String) (mEventListView.getItemAtPosition(myItemInt));
+            }                 
+      });
         //TODO pull in list of events from storage, populate list view, add listeners
         //TODO inside listener, jump to event view
         
@@ -39,8 +48,11 @@ public class EventListActivity extends Activity {
     }
     
     public void editConditions(View view){
-//    	Toast.makeText(this, , Toast.LENGTH_SHORT).show();
+    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
     	//TODO get activity, put it in the intent, then launch activity
+    	if(selectedFromList!=null){
+    		
+    	}
     }
     
     public void editResponse(View view){
