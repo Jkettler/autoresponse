@@ -19,9 +19,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ListView
-            android:id="@+id/event_list_view"
+            android:id="@+id/location_list_view"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice" />
     </LinearLayout>
 
     <RelativeLayout
