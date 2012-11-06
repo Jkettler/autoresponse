@@ -7,6 +7,8 @@ import android.os.Parcelable;
 
 public class AutoResponseEvent implements Parcelable {
 
+	public static final String EVENT_KEY = "AUTORESPONSEEVENT"; 
+
 	// I ignored the mName convention since this isn't strictly an android class
 
 	private String name;
@@ -14,7 +16,8 @@ public class AutoResponseEvent implements Parcelable {
 	// Context instance variables
 	private boolean ifDriving;
 	private boolean ifTime;
-	private int timeOfDay;
+	private int startMinuteOfDay;
+	private int endMinuteOfDay;
 	private boolean ifDay;
 	private List<Integer> days;
 	private boolean ifLocation;
@@ -37,7 +40,8 @@ public class AutoResponseEvent implements Parcelable {
 
 		ifDriving = parcel.readInt() == 0;
 		ifTime = parcel.readInt() == 0;
-		timeOfDay = parcel.readInt();
+		startMinuteOfDay = parcel.readInt();
+		endMinuteOfDay = parcel.readInt();
 		ifDay = parcel.readInt() == 0;
 		parcel.readList(days, null);
 		ifLocation = parcel.readInt() == 0;
@@ -49,6 +53,10 @@ public class AutoResponseEvent implements Parcelable {
 		reminderTime = parcel.readInt();
 		sendTextResponse = parcel.readInt() == 0;
 		textResponse = parcel.readString();
+	}
+
+	public AutoResponseEvent() {
+
 	}
 
 	public int describeContents() {
@@ -68,7 +76,8 @@ public class AutoResponseEvent implements Parcelable {
 		// constructor
 		dest.writeInt((ifDriving ? 0 : 1));
 		dest.writeInt((ifTime ? 0 : 1));
-		dest.writeInt(timeOfDay);
+		dest.writeInt(startMinuteOfDay);
+		dest.writeInt(endMinuteOfDay);
 		dest.writeInt((ifDay ? 0 : 1));
 		dest.writeList(days);
 		dest.writeInt((ifLocation ? 0 : 1));
@@ -127,12 +136,20 @@ public class AutoResponseEvent implements Parcelable {
 		this.ifTime = ifTime;
 	}
 
-	public int getTimeOfDay() {
-		return timeOfDay;
+	public int getStartMinuteOfDay() {
+		return startMinuteOfDay;
 	}
 
-	public void setTimeOfDay(int timeOfDay) {
-		this.timeOfDay = timeOfDay;
+	public void setStartMinuteOfDay(int startMinuteOfDay) {
+		this.startMinuteOfDay = startMinuteOfDay;
+	}
+
+	public int getEndMinuteOfDay() {
+		return endMinuteOfDay;
+	}
+
+	public void setEndMinuteOfDay(int endMinuteOfDay) {
+		this.endMinuteOfDay = endMinuteOfDay;
 	}
 
 	public boolean isIfDay() {

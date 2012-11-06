@@ -11,11 +11,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import autoresponse.util.AutoResponseEvent;
 
 public class ConditionSelectorActivity extends Activity {
 
 	private final String TAG = "ConditionSelectorActivity";
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +30,9 @@ public class ConditionSelectorActivity extends Activity {
 	}
 
 	public void createCondition(View view) {
+
+		//Beta TODO: disable the time pickers unless the corresponding checkbox is checked 
+		
 		// Pull info from UI
 		CheckBox drivingBox = (CheckBox) findViewById(R.id.driving_checkbox);
 		CheckBox locationBox = (CheckBox) findViewById(R.id.location_checkbox);
@@ -39,6 +43,17 @@ public class ConditionSelectorActivity extends Activity {
 		TimePicker endTimePicker = (TimePicker) findViewById(R.id.end_time_picker);
 		
 		// TODO Add days to UI and then pull them in too.
+		
+		AutoResponseEvent event = new AutoResponseEvent();
+		event.setIfDay(dayBox.isChecked());
+		event.setIfDriving(drivingBox.isChecked());
+		event.setIfLocation(locationBox.isChecked());
+		event.setIfTime(timeBox.isChecked());
+		
+		if(event.isIfTime()){
+			event.setStartMinuteOfDay(getMinutes(startTimePicker));
+			event.setEndMinuteOfDay(getMinutes(endTimePicker));
+		}
 
 		// Verify that time range given is valid
 		if(timeBox.isChecked() && !validTimeRange(startTimePicker, endTimePicker)){
@@ -63,14 +78,12 @@ public class ConditionSelectorActivity extends Activity {
 			Log.d(TAG, "Continue button was clicked without location checked.");
 			intent = new Intent(this, ResponseSelectorActivity.class);
 		}
-		// TODO put info from condition into intent as extras, 
-		/*
-		 * look into parcelable interface, it might be easiest to make an event object
-		 *  that implements parcelable and just pass it around
-	 	 *	better yet, make an event builder that will do validation when build()
-		 *	is called at the end of the UI workflow
-		*/
+		intent.putExtra(AutoResponseEvent.EVENT_KEY, event);
 		startActivity(intent);
+	}
+
+	private int getMinutes(TimePicker startTimePicker) {
+		return startTimePicker.getCurrentHour()*60+startTimePicker.getCurrentMinute();
 	}
 
 	private boolean validTimeRange(TimePicker startTimePicker,

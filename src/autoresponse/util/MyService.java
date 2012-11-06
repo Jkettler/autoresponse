@@ -201,7 +201,8 @@ public class MyService extends Service {
 		if(event.isIfTime()) {
 			// assuming event.getTimeOfDay() is the time of day in minutes
 			int[] time = getTimeOfDay();
-			if(event.getTimeOfDay() != (time[HOUR]*60 + time[MINUTE])) {
+			int currentTime = (time[HOUR]*60 + time[MINUTE]);
+			if(event.getStartMinuteOfDay() < currentTime && currentTime <  event.getEndMinuteOfDay() ) {
 				return false;
 			}
 		}

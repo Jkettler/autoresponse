@@ -27,28 +27,35 @@
             android:text="@string/time" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
-            <!--
-        Despite my best efforts, this doesn't seem like it's going to fit, 
-        buttons and a TimePickerDialog may be the way to go
-            -->
-
+            <TextView
+                android:id="@+id/start_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp" 
+                android:text="Start time:" />
+            
             <TimePicker
                 android:id="@+id/start_time_picker"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_weight=".5" />
+                android:layout_marginLeft="30dp" />
+
+            <TextView
+                android:id="@+id/end_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp" 
+                android:text="End time:" />
 
             <TimePicker
                 android:id="@+id/end_time_picker"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_weight=".5" />
+                android:layout_marginLeft="30dp" />
         </LinearLayout>
 
         <CheckBox
