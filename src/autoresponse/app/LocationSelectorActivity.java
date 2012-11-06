@@ -30,8 +30,15 @@ public class LocationSelectorActivity extends Activity {
     	
     	
     	if(locationSelected){
-    		//TODO Start response creator and pass along whatever data we got from the condition selector
+    		//TODO Start response selector and pass along whatever data we got from the condition selector
     		//Don't forget to include the location too
+    		
+    		//Set the location
+    		
+    		//Pass the updated event to the response selector
+    		Intent intent = new Intent(this, ResponseSelectorActivity.class);
+    		intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
+    		startActivity(intent);
     		
     	} else{
     		Toast.makeText(getApplicationContext(), "Please select a location", Toast.LENGTH_SHORT).show();

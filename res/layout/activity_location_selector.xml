@@ -18,6 +18,10 @@
             android:text="@string/my_locations"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <ListView
+            android:id="@+id/event_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -30,8 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/add_location"
-            android:onClick="addLocation" />
+            android:onClick="addLocation"
+            android:text="@string/add_location" />
 
         <Button
             android:id="@+id/select_location_button"
@@ -42,7 +46,6 @@
             android:layout_below="@+id/add_location_button"
             android:onClick="createResponse"
             android:text="@string/ok" />
-
     </RelativeLayout>
 
 </LinearLayout>

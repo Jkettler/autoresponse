@@ -25,7 +25,7 @@ public class ConditionSelectorActivity extends Activity {
 	
 	public void createCondition(View view) {
 
-		//Beta TODO: disable the time pickers unless the corresponding checkbox is checked 
+		//TODO: (beta) disable the time pickers unless the corresponding checkbox is checked 
 		
 		// Pull info from UI
 		CheckBox drivingBox = (CheckBox) findViewById(R.id.driving_checkbox);
