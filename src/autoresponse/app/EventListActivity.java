@@ -1,5 +1,7 @@
 package autoresponse.app;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -11,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
+import autoresponse.util.AutoResponseEvent;
+import autoresponse.util.PreferenceHandler;
 
 public class EventListActivity extends Activity {
 
@@ -26,9 +30,9 @@ public class EventListActivity extends Activity {
 
         //TODO: (beta) make it possible to turn off and on a particular event
         
-        String[] items = new String[] {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"};
+        String[] names = getNames();
         ArrayAdapter<String> adapter =
-          new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, items);
+          new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, names);
         
         mEventListView.setAdapter(adapter);
         
@@ -43,7 +47,16 @@ public class EventListActivity extends Activity {
         
     }
 
-    public void closeActivity(View view){
+    private String[] getNames() {
+		List<AutoResponseEvent> events = PreferenceHandler.getEventList(this);
+		String[] out = new String[events.size()];
+		for(int i=0; i<out.length; i++){
+			out[i] = events.get(i).getName();
+		}
+		return out;
+	}
+
+	public void closeActivity(View view){
     	finish();
     }
     
