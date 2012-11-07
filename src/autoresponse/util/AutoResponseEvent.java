@@ -4,15 +4,17 @@ import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class AutoResponseEvent implements Parcelable {
 
-	public static final String EVENT_KEY = "AUTORESPONSEEVENT"; 
+	public static final String EVENT_KEY = "AUTORESPONSEEVENT";
+	private static final String TAG = "AutoResponseEvent";
 
 	// I ignored the mName convention since this isn't strictly an android class
 
 	private String name;
-	
+
 	// Context instance variables
 	private boolean ifDriving;
 	private boolean ifTime;
@@ -93,7 +95,7 @@ public class AutoResponseEvent implements Parcelable {
 		dest.writeInt((ifLocation ? 0 : 1));
 		dest.writeString(location);
 		dest.writeInt((ifRecieveText ? 0 : 1));
-		
+
 		dest.writeInt((changePhoneMode ? 0 : 1));
 		dest.writeInt(phoneMode);
 		dest.writeInt((displayReminder ? 0 : 1));
@@ -103,8 +105,8 @@ public class AutoResponseEvent implements Parcelable {
 
 	}
 
-//	  This field is needed for Android to be able to create new objects,
-//	  individually or as arrays.
+	// This field is needed for Android to be able to create new objects,
+	// individually or as arrays.
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
 		public AutoResponseEvent createFromParcel(Parcel in) {
 			return new AutoResponseEvent(in);
@@ -117,10 +119,11 @@ public class AutoResponseEvent implements Parcelable {
 
 	// End parcelable code
 
-	public boolean isValidContext(){
-		return ifDriving || ifTime || (ifDay && days != null) || (ifLocation && location!= null) && name !=null ;
+	public boolean isValidContext() {
+		return ifDriving || ifTime || (ifDay && days != null)
+				|| (ifLocation && location != null) && name != null;
 	}
-	
+
 	// Getters and Setters
 
 	public String getName() {
@@ -241,5 +244,48 @@ public class AutoResponseEvent implements Parcelable {
 
 	public void setTextResponse(String textResponse) {
 		this.textResponse = textResponse;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean match = true;
+
+		if (obj instanceof AutoResponseEvent) {
+			AutoResponseEvent a = (AutoResponseEvent) obj;
+			match &= this.changePhoneMode == a.changePhoneMode;
+			match &= this.days == a.days;
+			match &= this.displayReminder == a.displayReminder;
+			match &= this.endMinuteOfDay == a.endMinuteOfDay;
+			match &= this.ifDay == a.ifDay;
+			match &= this.ifDriving == a.ifDriving;
+			match &= this.ifLocation == a.ifLocation;
+			match &= this.ifRecieveText == a.ifRecieveText;
+			match &= this.ifTime == a.ifTime;
+			match &= this.location == a.location;
+			match &= this.name == a.name;
+			match &= this.phoneMode == a.phoneMode;
+			match &= this.reminderTime == a.reminderTime;
+			match &= this.sendTextResponse == a.sendTextResponse;
+			match &= this.startMinuteOfDay == a.startMinuteOfDay;
+			match &= this.textResponse == a.textResponse;
+			
+			Log.d(TAG, "phonemode"+ this.changePhoneMode +": "+ a.changePhoneMode);
+			Log.d(TAG, "days"+ this.days +": "+ a.days);
+			Log.d(TAG, "dispremndr"+ this.displayReminder +": "+ a.displayReminder);
+			Log.d(TAG, "endminute"+ this.endMinuteOfDay +": "+ a.endMinuteOfDay);
+			Log.d(TAG, "day"+ this.ifDay +": "+ a.ifDay);
+			Log.d(TAG, "driving"+ this.ifDriving +": "+ a.ifDriving);
+			Log.d(TAG, "iflocation"+ this.ifLocation +": "+ a.ifLocation);
+			Log.d(TAG, "recieive"+ this.ifRecieveText +": "+ a.ifRecieveText);
+			Log.d(TAG, "iftime "+ this.ifTime +": "+ a.ifTime);
+			Log.d(TAG, "location "+ this.location +": "+ a.location);
+			Log.d(TAG, "name "+ this.name +": "+ a.name);
+			Log.d(TAG, "mode "+ this.phoneMode +": "+ a.phoneMode);
+			Log.d(TAG, "remndr time"+ this.reminderTime +": "+ a.reminderTime);
+			Log.d(TAG, "sentext"+ this.sendTextResponse +": "+ a.sendTextResponse);
+			Log.d(TAG, "start"+ this.startMinuteOfDay +": "+ a.startMinuteOfDay);
+			Log.d(TAG, "textresp"+ this.textResponse +": "+ a.textResponse);
+		}
+		return match;
 	}
 }

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
+import autoresponse.util.PreferenceHandler;
 
 public class HomeScreenActivity extends Activity {
 
@@ -15,6 +17,13 @@ public class HomeScreenActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        
+        boolean pass = PreferenceHandler.testPrefHandler(this);
+        String out = "fail";
+        if(pass){
+        	out = "pass";
+        }
+        Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
     }
 
     public void viewEvents(View view){
