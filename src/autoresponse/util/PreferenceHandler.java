@@ -37,6 +37,7 @@ public class PreferenceHandler {
 			event.setDays(eventPrefs.getString("day", "0000000"));
 			event.setIfLocation(eventPrefs.getBoolean("ifLocation", false));
 			event.setLocation(eventPrefs.getString("location", ""));
+			event.setIfRecieveText(eventPrefs.getBoolean("ifReceiveText", false));
 			
 			// response variables
 			event.setChangePhoneMode(eventPrefs.getBoolean("changePhoneMode", false));
@@ -92,6 +93,7 @@ public class PreferenceHandler {
 		ed.putString("day", event.getDays());
 		ed.putBoolean("ifLocation", event.isIfLocation());
 		ed.putString("location", event.getLocation());
+		ed.putBoolean("ifReceiveText", event.isIfRecieveText());
 		
 		// response variables
 		ed.putBoolean("changePhoneMode", event.isChangePhoneMode());

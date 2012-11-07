@@ -12,21 +12,17 @@ import autoresponse.util.PreferenceHandler;
 public class HomeScreenActivity extends Activity {
 
 	private static final String TAG = "HomeScreenActivity";
+	private static final boolean TEST = false;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         
-        boolean pass = PreferenceHandler.testPrefHandler(this);
-        String out = "fail";
-        if(pass){
-        	out = "pass";
-        }
-        Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+        if(TEST){runTests();}
     }
 
-    public void viewEvents(View view){
+	public void viewEvents(View view){
     	Log.d(TAG, "View event button clicked");
     	Intent intent = new Intent(this, EventListActivity.class);
     	startActivity(intent);
@@ -44,4 +40,13 @@ public class HomeScreenActivity extends Activity {
     	Log.d(TAG, "Exit app button clicked");
     	finish();
     }
+
+	private void runTests() {
+		boolean pass = PreferenceHandler.testPrefHandler(this);
+	    String out = "fail";
+	    if(pass){
+	    	out = "pass";
+	    }
+	    Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+	}
 }
