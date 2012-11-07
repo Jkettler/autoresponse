@@ -4,8 +4,13 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +25,7 @@ import android.os.IBinder;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
+import autoresponse.app.R;
 
 public class MyService extends Service {
 	
@@ -44,6 +50,10 @@ public class MyService extends Service {
 	
 	// an array of events that are being monitored 
 	private ArrayList<AutoResponseEvent> events;
+	private HashMap<String, double[]> locations;
+	private static ArrayList<Object[]> pendingReminders;
+	
+	private static int reminderID;
 	
 	// last known latitude and longitude
 	private static double latitude;
@@ -58,14 +68,35 @@ public class MyService extends Service {
 	public void onCreate() {
 		Log.d(TAG, "Service: onCreate");
 		
-		// TODO: read in data from files and create AutoResponseEvent objects
-		//   with the data, and add these objects to events (a global ArrayList)
+		events = PreferenceHandler.getEventList(getApplicationContext());
+		locations = PreferenceHandler.getLocationList(getApplicationContext());
+		pendingReminders = new ArrayList<Object[]>();
+		reminderID = 0;
 		
-		// register for updates if needed
-		// TODO: only make these method calls if events require.
-		registerTimeReceiver();
-		registerSMSReceiver();
-		registerLocationManager();
+		boolean timeReceiverNeeded = false;
+		boolean smsReceiverNeeded = false;
+		boolean locationManagerNeeded = false;
+		for(AutoResponseEvent event : events) {
+			if(event.isIfDay() || event.isIfTime()) {
+				timeReceiverNeeded = true;
+			}
+			if(event.isIfLocation()) {
+				locationManagerNeeded = true;
+			}
+			if(event.isIfRecieveText()) {
+				smsReceiverNeeded = true;
+			}
+		}
+		
+		if(timeReceiverNeeded) {
+			registerTimeReceiver();
+		}
+		if(smsReceiverNeeded) {
+			registerSMSReceiver();
+		}	
+		if(locationManagerNeeded) {
+			registerLocationManager();
+		}
 	}
 	
 	@Override
@@ -192,6 +223,12 @@ public class MyService extends Service {
 				executeResponse(event);
 			}
 		}
+		int currentTimeInMinutes = getTimeOfDay()[MINUTE]+getTimeOfDay()[HOUR]*60;
+		for(Object[] message : pendingReminders) {
+			if(currentTimeInMinutes == (Integer)message[0]) {
+				triggerReminder((String)message[1]);
+			}
+		}
 	}
 	
 	public boolean conditionsMet(AutoResponseEvent event) {
@@ -219,15 +256,19 @@ public class MyService extends Service {
 			}
 		}
 		if(event.isIfLocation()) {
-			// TODO: change AutoResponseEvent to store latitude and longitude values
-			// instead of a string location. Then compare these values to the current
-			// latitude and longitude (Stored in global variables here) to see if they
-			// are some arbitrary distance from the current location. Maybe .5 miles?
-			
-			//Riley's comment: If we store locations in a preference file we can refer to them
-			// using their name like a primary key
-			
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
+			String locationName = event.getLocation();
+			double[] location = locations.get(locationName);
+			double savedLat = location[PreferenceHandler.LATITUDE];
+			double savedLong = location[PreferenceHandler.LONGITUDE];
+			double savedRadius = location[PreferenceHandler.RADIUS];
+			double distance = Math.sqrt(Math.pow(savedLat, latitude)+ Math.pow(savedLong, longitude));
+			if(savedRadius > distance) {
+				return true;
+			}
+		}
+		if(event.isDisplayReminder()) {
+			return true;
 		}
 		
 		return result;
@@ -266,20 +307,37 @@ public class MyService extends Service {
 			setReminder(event.getReminderTime());
 		}
 		if(event.isSendTextResponse()) {
-			// TODO: Need a way to get the phone number to respond to.
-			sendTextMessage(event.getTextResponse(), 0);
+			sendTextMessage(event.getTextResponse(), lastReceivedSMSAddress);
+		}
+		if(event.isDisplayReminder()) {
+			setReminder(event.getReminderTime());
 		}
 	}
 	
 	
 	public void setReminder(int time) {
-		// TODO: Set a reminder to go off at the specified time.
+		// Note: time is an int in minutes since midnight. e.g. 1:01AM = 61
+		pendingReminders.add(new Object[]{time, "Hey, I'm reminding you to do something!"});
 	}
 	
-	public void sendTextMessage(String text, int phoneNumber) {
+	public void triggerReminder(String message) {
+		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		Notification note=new Notification(R.drawable.ic_launcher,"Status message!",System.currentTimeMillis());
+		PendingIntent i=PendingIntent.getActivity(this, 0, new Intent(this, NotificationMessage.class),0);
+		note.setLatestEventInfo(this, "Auto Response",message, i);
+		note.vibrate=new long[] {500L, 200L, 200L, 500L}; 
+		note.flags|=Notification.FLAG_AUTO_CANCEL;
+		
+		mgr.notify(reminderID, note);
+		
+		reminderID++;
+	}
+	
+	public void sendTextMessage(String text, String phoneNumber) {
 		// Send a text message to a specified phone number.
 		Toast.makeText(this, "Send a text message", Toast.LENGTH_SHORT).show();
 		// TODO Create a method that sends the text provided to the phone number provided.
+		
 	}
 	
 	public void setPhoneToNormal() {
