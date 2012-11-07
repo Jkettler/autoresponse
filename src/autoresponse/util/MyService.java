@@ -22,6 +22,7 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -336,8 +337,8 @@ public class MyService extends Service {
 	public void sendTextMessage(String text, String phoneNumber) {
 		// Send a text message to a specified phone number.
 		Toast.makeText(this, "Send a text message", Toast.LENGTH_SHORT).show();
-		// TODO Create a method that sends the text provided to the phone number provided.
-		
+		SmsManager smsManager = SmsManager.getDefault();
+		smsManager.sendTextMessage(phoneNumber, null, text, null, null);
 	}
 	
 	public void setPhoneToNormal() {
