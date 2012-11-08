@@ -90,7 +90,7 @@ public class EventListActivity extends Activity {
     	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
 
     	// delete the event
-    	PreferenceHandler.deleteEvent(this, selectedFromList);
+    	PreferenceHandler.deleteEvent(this, selectedFromList.replace(' ', '_'));
     	
     	// empty instance variables
     	selectedFromList = null;
