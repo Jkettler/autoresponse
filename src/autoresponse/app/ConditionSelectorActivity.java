@@ -43,6 +43,8 @@ public class ConditionSelectorActivity extends Activity {
 		event.setIfDriving(drivingBox.isChecked());
 		event.setIfLocation(locationBox.isChecked());
 		event.setIfTime(timeBox.isChecked());
+		event.setIfRecieveText(incomingTextBox.isChecked());
+		
 		
 		if(event.isIfTime()){
 			event.setStartMinuteOfDay(getMinutes(startTimePicker));
