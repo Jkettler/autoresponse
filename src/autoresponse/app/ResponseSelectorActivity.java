@@ -76,6 +76,5 @@ public class ResponseSelectorActivity extends Activity {
 		// and wind up here.
 		Intent intent = new Intent(this, HomeScreenActivity.class);
 		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-		;
 	}
 }

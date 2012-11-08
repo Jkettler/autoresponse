@@ -92,6 +92,10 @@ public class EventListActivity extends Activity {
     	// delete the event
     	PreferenceHandler.deleteEvent(this, selectedFromList);
     	
+    	// empty instance variables
+    	selectedFromList = null;
+    	
+    	
     	// Restarting service
     	Intent svc = new Intent(this, MyService.class);
 		stopService(svc);
