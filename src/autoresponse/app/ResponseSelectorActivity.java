@@ -26,6 +26,7 @@ public class ResponseSelectorActivity extends Activity {
 		setContentView(R.layout.activity_response_selector);
 		Intent intent = getIntent();
 		mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
+		
 	}
 
 	public void createEvent(View view) {

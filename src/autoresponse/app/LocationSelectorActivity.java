@@ -1,5 +1,6 @@
 package autoresponse.app;
 
+import java.util.HashMap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import autoresponse.util.AutoResponseEvent;
+import autoresponse.util.PreferenceHandler;
 
 public class LocationSelectorActivity extends Activity {
 
@@ -27,9 +29,11 @@ public class LocationSelectorActivity extends Activity {
         Intent intent = getIntent();
         mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
         
-        //TODO pull in location list
-    	//TODO populate list view for real instead of using this fake list
-        String[] items = new String[] {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"};
+        //pull in location list
+        HashMap<String, double[]> locations = PreferenceHandler.getLocationList(getApplicationContext());
+        String[] items = locations.keySet().toArray(new String[locations.keySet().size()]);
+        
+        
         ArrayAdapter<String> adapter =
           new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, items);
         
@@ -53,6 +57,7 @@ public class LocationSelectorActivity extends Activity {
     		//Don't forget to include the location too
     		
     		//Set the location
+    		mEvent.setLocation(selectedLocationName);
     		
     		//Pass the updated event to the response selector
     		Intent intent = new Intent(this, ResponseSelectorActivity.class);
