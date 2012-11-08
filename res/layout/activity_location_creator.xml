@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:onClick="onAddCurrentLocation"
         android:text="@string/add_current_location" />
 
     <TextView

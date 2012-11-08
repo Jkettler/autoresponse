@@ -98,10 +98,13 @@ public class MyService extends Service {
 			}
 			if(event.isIfRecieveText()) {
 				smsReceiverNeeded = true;
+				if(!event.isIfDay() || !event.isIfTime()) {
+					// no time is specified. Always respond to sms messages
+					respondToSMS = true;
+				}
 			}
 		}
-		
-		Log.d(TAG, "receive text: "+smsReceiverNeeded);
+
 		
 		if(timeReceiverNeeded) {
 			Log.d(TAG, "Registering time receiver");
@@ -227,7 +230,9 @@ public class MyService extends Service {
 					}
 					
 					if(respondToSMS) {
-						sendTextMessage(smsText, lastReceivedSMSAddress);
+						Log.d(TAG, "sending text message");
+						// TODO change default text message to smsText
+						sendTextMessage("default text message", lastReceivedSMSAddress);
 					}
 				}
 				notificationReceived();
