@@ -26,10 +26,14 @@ public class ResponseSelectorActivity extends Activity {
 		setContentView(R.layout.activity_response_selector);
 		Intent intent = getIntent();
 		mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
-		
+
+		Log.d(TAG, "Response Selector started for event with name: "+mEvent.getName());
 	}
 
 	public void createEvent(View view) {
+		
+		Log.d(TAG, "Ok button clicked, creating event.");
+		
 		// TODO Pull in data from UI, add it to the AutoResponseEvent object
 		CheckBox phoneModeCheckbox = (CheckBox) findViewById(R.id.phone_mode_checkbox);
 		CheckBox reminderCheckbox = (CheckBox) findViewById(R.id.reminder_checkbox);
@@ -66,6 +70,13 @@ public class ResponseSelectorActivity extends Activity {
 		}
 
 		// put the event in long term storage
+		
+		if(mEvent.getName() == null){
+			Log.w(TAG, "Event passed via intent has no name.");
+		} else {
+			Log.d(TAG, "Storing event with name: "+mEvent.getName());
+		}
+		
 		PreferenceHandler.writeEvent(this, mEvent);
 		
 		// restart service

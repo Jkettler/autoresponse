@@ -26,14 +26,6 @@ public class AutoResponseEvent implements Parcelable {
 	private String location;
 	private boolean ifRecieveText;
 
-	public boolean isIfRecieveText() {
-		return ifRecieveText;
-	}
-
-	public void setIfRecieveText(boolean ifRecieveText) {
-		this.ifRecieveText = ifRecieveText;
-	}
-
 	// Response instance variables
 	private boolean changePhoneMode;
 	private int phoneMode;
@@ -48,6 +40,7 @@ public class AutoResponseEvent implements Parcelable {
 	public AutoResponseEvent(Parcel parcel) {
 		// Read values from parcel in the order that writeToParcel puts them in
 		// ORDER MATTERS
+		name = parcel.readString();
 
 		ifDriving = parcel.readInt() == 0;
 		ifTime = parcel.readInt() == 0;
@@ -83,6 +76,8 @@ public class AutoResponseEvent implements Parcelable {
 		// different variables, so long as you use readString to pull them out
 		// in the same order inside the constructor
 
+		dest.writeString(name);
+		
 		// For reasons that escape me, there is no writeBoolean function, so
 		// I'm cheating and using a ternary here and a comparison in the
 		// constructor
@@ -125,6 +120,14 @@ public class AutoResponseEvent implements Parcelable {
 	}
 
 	// Getters and Setters
+
+	public boolean isIfRecieveText() {
+		return ifRecieveText;
+	}
+
+	public void setIfRecieveText(boolean ifRecieveText) {
+		this.ifRecieveText = ifRecieveText;
+	}
 
 	public String getName() {
 		return name;
@@ -268,23 +271,30 @@ public class AutoResponseEvent implements Parcelable {
 			match &= this.sendTextResponse == a.sendTextResponse;
 			match &= this.startMinuteOfDay == a.startMinuteOfDay;
 			match &= this.textResponse == a.textResponse;
-			
-			Log.d(TAG, "phonemode "+ this.changePhoneMode +": "+ a.changePhoneMode);
-			Log.d(TAG, "days "+ this.days +": "+ a.days);
-			Log.d(TAG, "dispremndr "+ this.displayReminder +": "+ a.displayReminder);
-			Log.d(TAG, "endminute "+ this.endMinuteOfDay +": "+ a.endMinuteOfDay);
-			Log.d(TAG, "day "+ this.ifDay +": "+ a.ifDay);
-			Log.d(TAG, "driving "+ this.ifDriving +": "+ a.ifDriving);
-			Log.d(TAG, "iflocation "+ this.ifLocation +": "+ a.ifLocation);
-			Log.d(TAG, "recieive "+ this.ifRecieveText +": "+ a.ifRecieveText);
-			Log.d(TAG, "iftime "+ this.ifTime +": "+ a.ifTime);
-			Log.d(TAG, "location "+ this.location +": "+ a.location);
-			Log.d(TAG, "name "+ this.name +": "+ a.name);
-			Log.d(TAG, "mode "+ this.phoneMode +": "+ a.phoneMode);
-			Log.d(TAG, "remndr time "+ this.reminderTime +": "+ a.reminderTime);
-			Log.d(TAG, "sentext "+ this.sendTextResponse +": "+ a.sendTextResponse);
-			Log.d(TAG, "start "+ this.startMinuteOfDay +": "+ a.startMinuteOfDay);
-			Log.d(TAG, "textresp "+ this.textResponse +": "+ a.textResponse);
+
+			Log.d(TAG, "phonemode " + this.changePhoneMode + ": "
+					+ a.changePhoneMode);
+			Log.d(TAG, "days " + this.days + ": " + a.days);
+			Log.d(TAG, "dispremndr " + this.displayReminder + ": "
+					+ a.displayReminder);
+			Log.d(TAG, "endminute " + this.endMinuteOfDay + ": "
+					+ a.endMinuteOfDay);
+			Log.d(TAG, "day " + this.ifDay + ": " + a.ifDay);
+			Log.d(TAG, "driving " + this.ifDriving + ": " + a.ifDriving);
+			Log.d(TAG, "iflocation " + this.ifLocation + ": " + a.ifLocation);
+			Log.d(TAG, "recieive " + this.ifRecieveText + ": "
+					+ a.ifRecieveText);
+			Log.d(TAG, "iftime " + this.ifTime + ": " + a.ifTime);
+			Log.d(TAG, "location " + this.location + ": " + a.location);
+			Log.d(TAG, "name " + this.name + ": " + a.name);
+			Log.d(TAG, "mode " + this.phoneMode + ": " + a.phoneMode);
+			Log.d(TAG, "remndr time " + this.reminderTime + ": "
+					+ a.reminderTime);
+			Log.d(TAG, "sentext " + this.sendTextResponse + ": "
+					+ a.sendTextResponse);
+			Log.d(TAG, "start " + this.startMinuteOfDay + ": "
+					+ a.startMinuteOfDay);
+			Log.d(TAG, "textresp " + this.textResponse + ": " + a.textResponse);
 		}
 		return match;
 	}

@@ -21,6 +21,7 @@ public class ConditionSelectorActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_condition_selector);
+		Log.d(TAG, "onCreate called");
 	}
 	
 	public void createCondition(View view) {
@@ -44,6 +45,12 @@ public class ConditionSelectorActivity extends Activity {
 		event.setIfLocation(locationBox.isChecked());
 		event.setIfTime(timeBox.isChecked());
 		event.setIfRecieveText(incomingTextBox.isChecked());
+		
+		event.setName(getIntent().getStringExtra(HomeScreenActivity.EVENT_NAME));
+		
+		if(event.getName() == null){
+			Log.w(TAG, "Event name taken from intent was null.");
+		}
 		
 		
 		if(event.isIfTime()){

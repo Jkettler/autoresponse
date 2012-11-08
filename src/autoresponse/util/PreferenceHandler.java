@@ -8,6 +8,7 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 public class PreferenceHandler {
 	
@@ -99,14 +100,13 @@ public class PreferenceHandler {
 
 			Log.d(TAG, "entering writeEvent");
 
-			// TODO make sure all events have names!!!
-			// Right now, I'm just adding in a dummy name if they don't have one - Kevin
-			String eventFileName = "no_name";
+//			// make sure all events have names
 			if(event.getName() == null) {
-				event.setName("no_name");
-			} else {
-				eventFileName = event.getName().replace(' ', '_');
+				Log.e(TAG, "Event passed has no name");
+				Toast.makeText(context, "Issue saving event details", Toast.LENGTH_SHORT).show();
+				return; 
 			}
+			String eventFileName = event.getName().replace(' ', '_');
 			SharedPreferences eventPrefs = context.getSharedPreferences(eventFileName, Context.MODE_PRIVATE);
 
 			SharedPreferences.Editor ed = eventPrefs.edit();
