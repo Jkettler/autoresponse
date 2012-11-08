@@ -167,7 +167,7 @@ public class MyService extends Service {
 				// This is the method that will be called when the location has changed
 				latitude = location.getLatitude();
 				longitude = location.getLongitude();
-				makeToast("Location changed");
+				//makeToast("Location Updated");
 				notificationReceived();
 			}
 			// Other methods are note used, but must be implemented.
@@ -178,7 +178,8 @@ public class MyService extends Service {
 		
 		int millisec = 10*1000; // 10 seconds
 		int meters = 10;
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, millisec, meters, locationListener);
+		// TODO use metes variable
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, millisec, 0, locationListener);
 		// Location updates could be fine tuned to use less power. LocationManager.PASSIVE_PROVIDER 
 		// could be helpful. Also, Android documentation suggests only checking the location every 
 		// 5 minutes in Services that are constantly running.
@@ -309,12 +310,16 @@ public class MyService extends Service {
 		if(event.isIfLocation()) {
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
 			String locationName = event.getLocation();
+			Log.d(TAG, "Location event: "+event.getName()+" location: "+locationName);
 			double[] location = locations.get(locationName);
 			double savedLat = location[PreferenceHandler.LATITUDE];
 			double savedLong = location[PreferenceHandler.LONGITUDE];
 			double savedRadius = location[PreferenceHandler.RADIUS];
-			double distance = Math.sqrt(Math.pow(savedLat, latitude)+ Math.pow(savedLong, longitude));
+			double distance = Math.sqrt(Math.pow(savedLat-latitude, 2)+ Math.pow(savedLong-longitude, 2));
+			savedRadius = savedRadius*1609.34; // convert from miles to meters
+			Log.d(TAG, "distance = "+distance+" radius = "+savedRadius);
 			if(savedRadius > distance) {
+				makeToast("Location within target radius.");
 				ifLocation = true;
 			}
 		}

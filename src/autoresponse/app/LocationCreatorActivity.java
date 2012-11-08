@@ -25,7 +25,8 @@ public class LocationCreatorActivity extends Activity {
 	private static double latitude = -1;
 	private static double longitude = -1;
 	private static LocationManager locationManager;
-	private static LocationListener locationListener;
+	private static LocationListener locationListener1;
+	private static LocationListener locationListener2;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,10 @@ public class LocationCreatorActivity extends Activity {
 	}
 	
 	public void registerLocationManager() {
+		// TODO figure out why the location manager still seems to be running after onPause/onDestroy is called
 		locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 		
-		locationListener = new LocationListener() {
+		locationListener1 = new LocationListener() {
 			public void onLocationChanged(Location location) {
 				// This is the method that will be called when the location has changed
 				latitude = location.getLatitude();
@@ -52,22 +54,35 @@ public class LocationCreatorActivity extends Activity {
 			public void onProviderEnabled(String provider) {}
 			public void onStatusChanged(String provider, int status,Bundle extras) {}
 		};
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		locationListener2 = new LocationListener() {
+			public void onLocationChanged(Location location) {
+				// This is the method that will be called when the location has changed
+				latitude = location.getLatitude();
+				longitude = location.getLongitude();
+			}
+			// Other methods are note used, but must be implemented.
+			public void onProviderDisabled(String provider) {}
+			public void onProviderEnabled(String provider) {}
+			public void onStatusChanged(String provider, int status,Bundle extras) {}
+		};
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener1);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener2);
 	}
 	
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "entering onDestroy");
 		super.onDestroy();
-		locationManager.removeUpdates(locationListener);
+		locationManager.removeUpdates(locationListener1);
+		locationManager.removeUpdates(locationListener2);
 	}
 	
 	@Override
 	public void onPause() {
 		Log.d(TAG, "entering onPause");
 		super.onPause();
-		locationManager.removeUpdates(locationListener);
+		locationManager.removeUpdates(locationListener1);
+		locationManager.removeUpdates(locationListener2);
 	}
 	
 	@Override
@@ -79,7 +94,6 @@ public class LocationCreatorActivity extends Activity {
 	
 	public void onAddCurrentLocation(View view) {
 		Log.d(TAG, "Add current location button clicked.");
-		// TODO 
 
 		try {
 			
@@ -97,15 +111,15 @@ public class LocationCreatorActivity extends Activity {
 			try {
 				Double.parseDouble(radiusString);
 				/*
-				if(radius <= 0) {
+				if(radius <= 0.0) {
 					throw new NumberFormatException();
 				}
-				if(radius > 10) {
+				if(radius > 10.0) {
 					throw new NumberFormatException();
 				}
 				*/
 			} catch (NumberFormatException e) {
-				Toast.makeText(getApplicationContext(), "Invalid radius: "+radiusString, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Invalid radius: "+radiusString+" "+radius, Toast.LENGTH_SHORT).show();
 				return;
 			}
 
