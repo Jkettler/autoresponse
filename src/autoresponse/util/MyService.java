@@ -177,9 +177,8 @@ public class MyService extends Service {
 		};
 		
 		int millisec = 10*1000; // 10 seconds
-		int meters = 10;
-		// TODO use metes variable
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, millisec, 0, locationListener);
+		int meters = 30;
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, millisec, meters, locationListener);
 		// Location updates could be fine tuned to use less power. LocationManager.PASSIVE_PROVIDER 
 		// could be helpful. Also, Android documentation suggests only checking the location every 
 		// 5 minutes in Services that are constantly running.
@@ -277,6 +276,7 @@ public class MyService extends Service {
 	
 	public boolean conditionsMet(AutoResponseEvent event) {
 		// if any of the conditions are false, return false
+		Log.d(TAG, "entering conditionsMet");
 
 		boolean ifDriving = false;
 		boolean ifTime = false;
@@ -290,7 +290,7 @@ public class MyService extends Service {
 			// assuming event.getTimeOfDay() is the time of day in minutes
 			int[] time = getTimeOfDay();
 			int currentTime = (time[HOUR]*60 + time[MINUTE]);
-			if(event.getStartMinuteOfDay() == currentTime) {
+			if(event.getStartMinuteOfDay() <= currentTime && event.getEndMinuteOfDay() >= currentTime) {
 				ifTime = true;
 			}
 		}
@@ -310,17 +310,22 @@ public class MyService extends Service {
 		if(event.isIfLocation()) {
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
 			String locationName = event.getLocation();
-			Log.d(TAG, "Location event: "+event.getName()+" location: "+locationName);
 			double[] location = locations.get(locationName);
 			double savedLat = location[PreferenceHandler.LATITUDE];
 			double savedLong = location[PreferenceHandler.LONGITUDE];
 			double savedRadius = location[PreferenceHandler.RADIUS];
-			double distance = Math.sqrt(Math.pow(savedLat-latitude, 2)+ Math.pow(savedLong-longitude, 2));
-			savedRadius = savedRadius*1609.34; // convert from miles to meters
-			Log.d(TAG, "distance = "+distance+" radius = "+savedRadius);
+			
+			//double distance = Math.sqrt(Math.pow(savedLat-latitude, 2)+ Math.pow(savedLong-longitude, 2));
+			float[] result = new float[1]; 
+			Location.distanceBetween(latitude, longitude, savedLat, savedLong, result);
+			float distance = result[0];
+			
+			savedRadius *= 1609.34;
 			if(savedRadius > distance) {
-				makeToast("Location within target radius.");
+				//makeToast("Location within target radius. ("+distance+")");
 				ifLocation = true;
+			} else {
+				//makeToast("Location outside target radius. ("+distance+")");
 			}
 		}
 		if(event.isDisplayReminder()) {
@@ -330,6 +335,7 @@ public class MyService extends Service {
 			ifReceiveText = true;
 		}
 		
+		
 		return 	(event.isIfDriving() == ifDriving) &&
 				(event.isIfTime() == ifTime) &&
 				(event.isIfDay() == ifDay) &&
@@ -337,6 +343,7 @@ public class MyService extends Service {
 				(event.isDisplayReminder() == ifDisplayReminder) &&
 				(event.isIfRecieveText() == ifReceiveText);
 	}
+	
 	
 	public int[] getTimeOfDay() {
 		/*
@@ -349,25 +356,46 @@ public class MyService extends Service {
 		int hour = Integer.parseInt(time[0]);
 		int min = Integer.parseInt(time[1]);
 		int sec = Integer.parseInt(time[2]);
+		if(split[4].equals("PM")) {
+			hour += 12;
+		}
 		return new int[]{hour, min, sec};
 	}
 	
 	public void executeResponse(AutoResponseEvent event) {
 		Log.d(TAG, "entering executeResponse");
-		if(event.isChangePhoneMode()) {
+		
+		
+		// for some responses, actions will only be allowed if it is the start time.
+		// for others, it only requires being between the start and finish time.
+		int[] time = getTimeOfDay();
+		int currentTime = (time[HOUR]*60 + time[MINUTE]);
+//		boolean isInTimeWindow = (event.getStartMinuteOfDay() <= currentTime && 
+//								event.getEndMinuteOfDay() >= currentTime);
+		boolean isStartTime = ((event.getStartMinuteOfDay() == currentTime) && event.isIfTime()) ||
+								!event.isIfTime();
+		boolean isEndTime = ((event.getEndMinuteOfDay() == currentTime) && event.isIfTime()) ||
+								!event.isIfTime();
+			
+		if(event.isChangePhoneMode() && isStartTime) {
+			Log.d(TAG, "changing phone mode");
 			changeRingerMode(event.getPhoneMode());
 			pendingRingerModeChanges.add(new int[]{event.getEndMinuteOfDay(), previousRingerMode});
 		}
-		if(event.isDisplayReminder()) {
+		if(event.isDisplayReminder() && isStartTime) {
+			Log.d(TAG, "setting a reminder");
 			setReminder(event.getReminderTime());
 		}
-		if(event.isSendTextResponse()) {
+		if(event.isSendTextResponse() && isStartTime) {
+			Log.d(TAG, "setting respondToSMS = true");
 			smsText = event.getTextResponse();
 			respondToSMS = true;
 		}
-		if(event.isDisplayReminder()) {
-			setReminder(event.getReminderTime());
+		if(event.isSendTextResponse() && isEndTime) {
+			Log.d(TAG, "setting respondToSMS = false");
+			respondToSMS = false;
 		}
+			
 	}
 	
 	
