@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import autoresponse.util.AutoResponseEvent;
+import autoresponse.util.MyService;
 import autoresponse.util.PreferenceHandler;
 
 public class ResponseSelectorActivity extends Activity {
@@ -65,7 +66,11 @@ public class ResponseSelectorActivity extends Activity {
 
 		// put the event in long term storage
 		PreferenceHandler.writeEvent(this, mEvent);
-		// TODO restart the service
+		
+		// restart service
+    	Intent svc = new Intent(this, MyService.class);
+		stopService(svc);
+		startService(svc);
 
 		// Go back to the home screen but pass a flag so that you can't hit back
 		// and wind up here.

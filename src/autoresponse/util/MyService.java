@@ -34,7 +34,7 @@ public class MyService extends Service {
 	public static final String LOCATION_INDEX_FILE = "location_index_prefs";
 	public static final String EVENT_INDEX_FILE = "event_index_prefs";
 	
-	private static final String TAG = "AUTO_RESPONSE";
+	private static final String TAG = "MyService";
 	private BroadcastReceiver timeReceiver = null;
 	private BroadcastReceiver smsReceiver = null;
 	private LocationManager locationManager = null;
@@ -45,14 +45,18 @@ public class MyService extends Service {
 	private final int MINUTE = 1;
 	private final int SECOND = 2;
 	
-	private final int MODE_SILENT = 0;
-	private final int MODE_VIBRATE = 1;
-	private final int MODE_NORMAL = 2;
+	private final int MODE_SILENT = AudioManager.RINGER_MODE_SILENT;
+	private final int MODE_VIBRATE = AudioManager.RINGER_MODE_VIBRATE;
+	private final int MODE_NORMAL = AudioManager.RINGER_MODE_NORMAL;
 	
 	// an array of events that are being monitored 
 	private ArrayList<AutoResponseEvent> events;
 	private HashMap<String, double[]> locations;
 	private static ArrayList<Object[]> pendingReminders;
+	private static ArrayList<int[]> pendingRingerModeChanges;
+	
+	private static boolean respondToSMS;
+	private static String smsText;
 	
 	private static int reminderID;
 	
@@ -63,6 +67,7 @@ public class MyService extends Service {
 	// last phone number that sent an SMS to this device
 	private static String lastReceivedSMSAddress;
 	
+	private static int previousRingerMode;
 	// End of Global variables
 	
 	@Override
@@ -72,7 +77,14 @@ public class MyService extends Service {
 		events = PreferenceHandler.getEventList(getApplicationContext());
 		locations = PreferenceHandler.getLocationList(getApplicationContext());
 		pendingReminders = new ArrayList<Object[]>();
+		pendingRingerModeChanges = new ArrayList<int[]>();
 		reminderID = 0;
+		
+		AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+		previousRingerMode = am.getRingerMode();
+		
+		respondToSMS = false;
+		smsText = "";
 		
 		boolean timeReceiverNeeded = false;
 		boolean smsReceiverNeeded = false;
@@ -89,13 +101,18 @@ public class MyService extends Service {
 			}
 		}
 		
+		Log.d(TAG, "receive text: "+smsReceiverNeeded);
+		
 		if(timeReceiverNeeded) {
+			Log.d(TAG, "Registering time receiver");
 			registerTimeReceiver();
 		}
 		if(smsReceiverNeeded) {
+			Log.d(TAG, "Registering SMS receiver");
 			registerSMSReceiver();
 		}	
 		if(locationManagerNeeded) {
+			Log.d(TAG, "Registering LocationManager");
 			registerLocationManager();
 		}
 	}
@@ -148,6 +165,7 @@ public class MyService extends Service {
 				latitude = location.getLatitude();
 				longitude = location.getLongitude();
 				makeToast("Location changed");
+				notificationReceived();
 			}
 			// Other methods are note used, but must be implemented.
 			public void onProviderDisabled(String provider) {}
@@ -172,6 +190,7 @@ public class MyService extends Service {
 				// This is the function that will be called when the time changes
 				int[] arr = getTimeOfDay();
 				makeToast("Time Receiver: "+arr[0]+":"+arr[1]+":"+arr[2]);
+				notificationReceived();
 			}
 		};
 		
@@ -206,7 +225,12 @@ public class MyService extends Service {
 							lastReceivedSMSAddress = message.getDisplayOriginatingAddress();
 						}
 					}
+					
+					if(respondToSMS) {
+						sendTextMessage(smsText, lastReceivedSMSAddress);
+					}
 				}
+				notificationReceived();
 			}
 		};
 		
@@ -217,6 +241,7 @@ public class MyService extends Service {
 	public void notificationReceived() {
 		// If a notification is received, check to see if it corresponds to the
 		// conditions outlined in the events.
+		Log.d(TAG, "entering notificationReceived");
 		
 		for(AutoResponseEvent event : events) {
 			// Check to see if event conditions are matched. If so, execute the response.
@@ -225,26 +250,42 @@ public class MyService extends Service {
 			}
 		}
 		int currentTimeInMinutes = getTimeOfDay()[MINUTE]+getTimeOfDay()[HOUR]*60;
-		for(Object[] message : pendingReminders) {
+		
+		for(int i=0; i < pendingReminders.size(); i++) {
+			Object[] message = pendingReminders.get(i);
 			if(currentTimeInMinutes == (Integer)message[0]) {
 				triggerReminder((String)message[1]);
+				pendingReminders.remove(i);
+				i--;
+			}
+		}
+		for(int i=0; i <  pendingRingerModeChanges.size(); i++) {
+			int[] change = pendingRingerModeChanges.get(i);
+			if(currentTimeInMinutes == change[0]) {
+				changeRingerMode(change[1]);
+				pendingRingerModeChanges.remove(i);
+				i--;
 			}
 		}
 	}
 	
 	public boolean conditionsMet(AutoResponseEvent event) {
 		// if any of the conditions are false, return false
-		boolean result = true;
-		if(event.isIfDriving()) {
-			// TODO: Implement this for Beta release?
-			return false;
-		}
+
+		boolean ifDriving = false;
+		boolean ifTime = false;
+		boolean ifDay = false;
+		boolean ifLocation = false;
+		boolean ifDisplayReminder = false;
+		boolean ifReceiveText = false;
+		
+		
 		if(event.isIfTime()) {
 			// assuming event.getTimeOfDay() is the time of day in minutes
 			int[] time = getTimeOfDay();
 			int currentTime = (time[HOUR]*60 + time[MINUTE]);
-			if(event.getStartMinuteOfDay() < currentTime && currentTime <  event.getEndMinuteOfDay() ) {
-				return false;
+			if(event.getStartMinuteOfDay() == currentTime) {
+				ifTime = true;
 			}
 		}
 		if(event.isIfDay()) {
@@ -253,8 +294,12 @@ public class MyService extends Service {
 			int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 			String days = event.getDays();
 			if(days.charAt(dayOfWeek-1) == 0) {
-				return false;
+				ifDay = true;
 			}
+		}
+		if(event.isIfDriving()) {
+			// TODO: Implement this for Beta release?
+			ifDriving = true;
 		}
 		if(event.isIfLocation()) {
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
@@ -265,14 +310,22 @@ public class MyService extends Service {
 			double savedRadius = location[PreferenceHandler.RADIUS];
 			double distance = Math.sqrt(Math.pow(savedLat, latitude)+ Math.pow(savedLong, longitude));
 			if(savedRadius > distance) {
-				return true;
+				ifLocation = true;
 			}
 		}
 		if(event.isDisplayReminder()) {
-			return true;
+			ifDisplayReminder = true;
+		}
+		if(event.isIfRecieveText()) {
+			ifReceiveText = true;
 		}
 		
-		return result;
+		return 	(event.isIfDriving() == ifDriving) &&
+				(event.isIfTime() == ifTime) &&
+				(event.isIfDay() == ifDay) &&
+				(event.isIfLocation() == ifLocation) &&
+				(event.isDisplayReminder() == ifDisplayReminder) &&
+				(event.isIfRecieveText() == ifReceiveText);
 	}
 	
 	public int[] getTimeOfDay() {
@@ -290,25 +343,17 @@ public class MyService extends Service {
 	}
 	
 	public void executeResponse(AutoResponseEvent event) {
+		Log.d(TAG, "entering executeResponse");
 		if(event.isChangePhoneMode()) {
-			int mode = event.getPhoneMode();
-			switch (mode) {
-			case MODE_SILENT:
-				setPhoneToSilent();
-				break;
-			case MODE_VIBRATE:
-				setPhoneToVibrate();
-				break;
-			case MODE_NORMAL:
-				setPhoneToNormal();
-				break;
-			}
+			changeRingerMode(event.getPhoneMode());
+			pendingRingerModeChanges.add(new int[]{event.getEndMinuteOfDay(), previousRingerMode});
 		}
 		if(event.isDisplayReminder()) {
 			setReminder(event.getReminderTime());
 		}
 		if(event.isSendTextResponse()) {
-			sendTextMessage(event.getTextResponse(), lastReceivedSMSAddress);
+			smsText = event.getTextResponse();
+			respondToSMS = true;
 		}
 		if(event.isDisplayReminder()) {
 			setReminder(event.getReminderTime());
@@ -318,9 +363,11 @@ public class MyService extends Service {
 	
 	public void setReminder(int time) {
 		// Note: time is an int in minutes since midnight. e.g. 1:01AM = 61
+		// TODO Beta: make the reminder text customizable.
 		pendingReminders.add(new Object[]{time, "Hey, I'm reminding you to do something!"});
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void triggerReminder(String message) {
 		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		Notification note=new Notification(R.drawable.ic_launcher,"Status message!",System.currentTimeMillis());
@@ -341,25 +388,18 @@ public class MyService extends Service {
 		smsManager.sendTextMessage(phoneNumber, null, text, null, null);
 	}
 	
-	public void setPhoneToNormal() {
+	public void changeRingerMode(int ringerMode) {
 		// Sets phone to normal ring mode
-		makeToast("Setting phone to normal.");
+		Log.d(TAG, "entering changeRingerMode");
+		assert ringerMode == MODE_SILENT ||ringerMode == MODE_VIBRATE || ringerMode == MODE_NORMAL;
+		
+		if(ringerMode == MODE_SILENT) { Log.d(TAG, "entering changeRingerMode silent");} 
+		if(ringerMode == MODE_VIBRATE) { Log.d(TAG, "entering changeRingerMode vibrate");} 
+		if(ringerMode == MODE_NORMAL) {Log.d(TAG, "entering changeRingerMode normal");}
+		
 		AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-		am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-	}
-	
-	public void setPhoneToVibrate() {
-		// Sets phone to vibrate mode
-		makeToast("Setting phone to silent.");
-		AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-		am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-	}
-	
-	public void setPhoneToSilent() {
-		// Sets pheon to silent mode
-		makeToast("Setting phone to silent.");
-		AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-		am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+		previousRingerMode = am.getRingerMode();
+		am.setRingerMode(ringerMode);
 	}
 	
 	private void makeToast(String s) {

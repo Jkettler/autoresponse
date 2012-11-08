@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+import autoresponse.util.MyService;
 import autoresponse.util.PreferenceHandler;
 
 public class HomeScreenActivity extends Activity {
@@ -17,9 +18,18 @@ public class HomeScreenActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "entering onCreate");
         setContentView(R.layout.activity_home_screen);
         
         if(TEST){runTests();}
+        
+        try {
+    		//start service
+    		Intent svc = new Intent(this, MyService.class);
+    		startService(svc);
+    	} catch (Exception e) {
+    		Log.d(TAG, "error in starting service");
+    	}
     }
 
 	public void viewEvents(View view){

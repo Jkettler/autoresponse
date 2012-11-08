@@ -2,8 +2,12 @@ package autoresponse.app;
 
 import java.util.List;
 
+import autoresponse.util.MyService;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,36 +22,38 @@ import autoresponse.util.PreferenceHandler;
 
 public class EventListActivity extends Activity {
 
+	private final String TAG = "EventListActivity";
 	private ListView mEventListView;
 	private String selectedFromList;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Log.d(TAG, "entering onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
         
         mEventListView = (ListView) findViewById(R.id.event_list_view);
 
         //TODO: (beta) make it possible to turn off and on a particular event
-        
-        String[] names = getNames();
+        populateEventList();
+    }
+    
+    private void populateEventList() {
+    	String[] names = getNames();
         ArrayAdapter<String> adapter =
           new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, names);
         
         mEventListView.setAdapter(adapter);
-        
+
         mEventListView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
-              selectedFromList =(String) (mEventListView.getItemAtPosition(myItemInt));
-            }                 
-      });
-        //TODO pull in list of events from storage, populate list view, add listeners
-        //TODO inside listener, jump to event view
-        
-        
+        	public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
+        		selectedFromList =(String) (mEventListView.getItemAtPosition(myItemInt));
+        	}                 
+        });
     }
 
     private String[] getNames() {
+    	Log.d(TAG, "entering getNames");
 		List<AutoResponseEvent> events = PreferenceHandler.getEventList(this);
 		String[] out = new String[events.size()];
 		for(int i=0; i<out.length; i++){
@@ -57,22 +63,42 @@ public class EventListActivity extends Activity {
 	}
 
 	public void closeActivity(View view){
+		Log.d(TAG, "entering closeActivity");
     	finish();
     }
     
     public void editConditions(View view){
+    	Log.d(TAG, "entering closeActivity");
     	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
-    	//TODO get activity, put it in the intent, then launch activity
     	if(selectedFromList!=null){
-    		
+    		Intent intent = new Intent(this, ConditionSelectorActivity.class);
+        	startActivity(intent);
     	}
     }
     
     public void editResponse(View view){
-    	//TODO get activity, put it in the intent, then launch activity
+    	Log.d(TAG, "entering editResponse");
+    	Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
+    	if(selectedFromList != null) {
+    		Intent intent = new Intent(this, ResponseSelectorActivity.class);
+    		startActivity(intent);
+    	}
     }
     
     public void deleteEvent(View view){
-    	//delete activity, restart service
+    	Log.d(TAG, "entering deleteEvent");
+    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
+
+    	// delete the event
+    	PreferenceHandler.deleteEvent(this, selectedFromList);
+    	
+    	// Restarting service
+    	Intent svc = new Intent(this, MyService.class);
+		stopService(svc);
+		startService(svc);
+		
+		// redraw view with updated event list
+		populateEventList();
+		view.invalidate();
     }
 }
