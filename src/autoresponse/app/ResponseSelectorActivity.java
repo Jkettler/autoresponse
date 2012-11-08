@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -38,7 +39,7 @@ public class ResponseSelectorActivity extends Activity {
 		CheckBox phoneModeCheckbox = (CheckBox) findViewById(R.id.phone_mode_checkbox);
 		CheckBox reminderCheckbox = (CheckBox) findViewById(R.id.reminder_checkbox);
 		CheckBox textResponseCheckbox = (CheckBox) findViewById(R.id.text_response_checkbox);
-		//TODO Need text response input
+		
 		TimePicker reminderTimePicker = (TimePicker) findViewById(R.id.reminder_time_picker);
 
 		mEvent.setChangePhoneMode(phoneModeCheckbox.isChecked());
@@ -49,7 +50,13 @@ public class ResponseSelectorActivity extends Activity {
 			mEvent.setReminderTime(reminderTimePicker.getCurrentHour()*60+reminderTimePicker.getCurrentMinute());
 		}
 			
-		
+		if(mEvent.isSendTextResponse()){
+			EditText textResponseEditText = (EditText) findViewById(R.id.text_response_edit);
+			String textResponse = textResponseEditText.getText().toString();
+			Log.d(TAG, "Creating event with text response: "+textResponse);
+			mEvent.setTextResponse(textResponse);
+		}
+			
 		RadioGroup phoneModeRadioGroup = (RadioGroup) findViewById(R.id.phone_mode_radio);
 		int id = phoneModeRadioGroup.getCheckedRadioButtonId();
 

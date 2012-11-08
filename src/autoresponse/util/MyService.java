@@ -232,8 +232,7 @@ public class MyService extends Service {
 					
 					if(respondToSMS) {
 						Log.d(TAG, "sending text message");
-						// TODO change default text message to smsText
-						sendTextMessage("default text message", lastReceivedSMSAddress);
+						sendTextMessage(smsText, lastReceivedSMSAddress);
 					}
 				}
 				notificationReceived();
@@ -328,6 +327,7 @@ public class MyService extends Service {
 		}
 		if(event.isIfRecieveText()) {
 			ifReceiveText = true;
+			smsText = event.getTextResponse();
 		}
 		
 		return 	(event.isIfDriving() == ifDriving) &&
