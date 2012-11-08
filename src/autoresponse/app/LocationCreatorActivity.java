@@ -109,15 +109,13 @@ public class LocationCreatorActivity extends Activity {
 			double radius = 0;
 			String radiusString = locationRadius.getText().toString();
 			try {
-				Double.parseDouble(radiusString);
-				/*
+				radius = Double.parseDouble(radiusString);
 				if(radius <= 0.0) {
 					throw new NumberFormatException();
 				}
 				if(radius > 10.0) {
 					throw new NumberFormatException();
 				}
-				*/
 			} catch (NumberFormatException e) {
 				Toast.makeText(getApplicationContext(), "Invalid radius: "+radiusString+" "+radius, Toast.LENGTH_SHORT).show();
 				return;
