@@ -17,34 +17,56 @@ public class ConditionSelectorActivity extends Activity {
 
 	private final String TAG = "ConditionSelectorActivity";
 	
+	private CheckBox mDrivingBox;
+	private CheckBox mLocationBox;
+	private CheckBox mTimeBox;
+	private CheckBox mDayBox;
+	private CheckBox mIncomingTextBox;
+	private TimePicker mStartTimePicker;
+	private TimePicker mEndTimePicker;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_condition_selector);
 		Log.d(TAG, "onCreate called");
+
+		mDrivingBox = (CheckBox) findViewById(R.id.driving_checkbox);
+		mLocationBox = (CheckBox) findViewById(R.id.location_checkbox);
+		mTimeBox = (CheckBox) findViewById(R.id.time_checkbox);
+		mDayBox = (CheckBox) findViewById(R.id.day_checkbox);
+		mIncomingTextBox = (CheckBox) findViewById(R.id.incoming_text_checkbox);
+		mStartTimePicker = (TimePicker) findViewById(R.id.start_time_picker);
+		mEndTimePicker = (TimePicker) findViewById(R.id.end_time_picker);
+		
+		//Fill in UI with details from event passed via intent
+		AutoResponseEvent event = getIntent().getParcelableExtra(AutoResponseEvent.EVENT_KEY);
+		if(event != null){
+			//TODO days still...
+			mDrivingBox.setChecked(event.isIfDriving());
+			mLocationBox.setChecked(event.isIfLocation());
+			mTimeBox.setChecked(event.isIfTime());
+			mDayBox.setChecked(event.isIfDay());
+			mIncomingTextBox.setChecked(event.isIfRecieveText());
+			mStartTimePicker.setCurrentHour(event.getStartMinuteOfDay()/60);
+			mStartTimePicker.setCurrentMinute(event.getStartMinuteOfDay()%60);
+			mEndTimePicker.setCurrentHour(event.getEndMinuteOfDay()/60);
+			mEndTimePicker.setCurrentMinute(event.getEndMinuteOfDay()%60);
+		}
 	}
 	
 	public void createCondition(View view) {
 
 		//TODO: (beta) disable the time pickers unless the corresponding checkbox is checked 
 		
-		// Pull info from UI
-		CheckBox drivingBox = (CheckBox) findViewById(R.id.driving_checkbox);
-		CheckBox locationBox = (CheckBox) findViewById(R.id.location_checkbox);
-		CheckBox timeBox = (CheckBox) findViewById(R.id.time_checkbox);
-		CheckBox dayBox = (CheckBox) findViewById(R.id.day_checkbox);
-		CheckBox incomingTextBox = (CheckBox) findViewById(R.id.incoming_text_checkbox);
-		TimePicker startTimePicker = (TimePicker) findViewById(R.id.start_time_picker);
-		TimePicker endTimePicker = (TimePicker) findViewById(R.id.end_time_picker);
-		
 		// TODO Add days to UI and then pull them in too.
 		
 		AutoResponseEvent event = new AutoResponseEvent();
-		event.setIfDay(dayBox.isChecked());
-		event.setIfDriving(drivingBox.isChecked());
-		event.setIfLocation(locationBox.isChecked());
-		event.setIfTime(timeBox.isChecked());
-		event.setIfRecieveText(incomingTextBox.isChecked());
+		event.setIfDay(mDayBox.isChecked());
+		event.setIfDriving(mDrivingBox.isChecked());
+		event.setIfLocation(mLocationBox.isChecked());
+		event.setIfTime(mTimeBox.isChecked());
+		event.setIfRecieveText(mIncomingTextBox.isChecked());
 		
 		event.setName(getIntent().getStringExtra(HomeScreenActivity.EVENT_NAME));
 		
@@ -54,17 +76,17 @@ public class ConditionSelectorActivity extends Activity {
 		
 		
 		if(event.isIfTime()){
-			event.setStartMinuteOfDay(getMinutes(startTimePicker));
-			event.setEndMinuteOfDay(getMinutes(endTimePicker));
+			event.setStartMinuteOfDay(getMinutes(mStartTimePicker));
+			event.setEndMinuteOfDay(getMinutes(mEndTimePicker));
 		}
 
 		// Verify that time range given is valid
-		if(timeBox.isChecked() && !validTimeRange(startTimePicker, endTimePicker)){
+		if(mTimeBox.isChecked() && !validTimeRange(mStartTimePicker, mEndTimePicker)){
 			Toast.makeText(getApplicationContext(),	"Please choose a valid time range.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
-		boolean input = drivingBox.isChecked() || locationBox.isChecked() || timeBox.isChecked() || dayBox.isChecked() || incomingTextBox.isChecked();
+		boolean input = mDrivingBox.isChecked() || mLocationBox.isChecked() || mTimeBox.isChecked() || mDayBox.isChecked() || mIncomingTextBox.isChecked();
 		if (!input) {
 			// If nothing is given as input, stay in activity and put up a toast
 			Toast.makeText(getApplicationContext(),	"Please provide a context.", Toast.LENGTH_SHORT).show();
@@ -72,7 +94,7 @@ public class ConditionSelectorActivity extends Activity {
 		}
 		
 		Intent intent;
-		if (locationBox.isChecked()) {
+		if (mLocationBox.isChecked()) {
 			//Go to location selector
 			Log.d(TAG, "Continue button was clicked with location checked.");
 			intent = new Intent(this, LocationSelectorActivity.class);
