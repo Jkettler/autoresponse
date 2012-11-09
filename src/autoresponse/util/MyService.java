@@ -322,6 +322,7 @@ public class MyService extends Service {
 				ifLocation = true;
 			} else {
 				//makeToast("Location outside target radius. ("+distance+")");
+				ifLocation = false;
 			}
 		}
 		if(event.isDisplayReminder()) {
