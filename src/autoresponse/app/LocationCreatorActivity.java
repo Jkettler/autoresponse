@@ -1,5 +1,7 @@
 package autoresponse.app;
 
+import java.util.List;
+
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -65,8 +67,13 @@ public class LocationCreatorActivity extends Activity {
 			public void onProviderEnabled(String provider) {}
 			public void onStatusChanged(String provider, int status,Bundle extras) {}
 		};
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener1);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener2);
+		List<String> providers = locationManager.getAllProviders();
+		if(providers.contains(LocationManager.GPS_PROVIDER)){
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener1);
+		}
+		if(providers.contains(LocationManager.NETWORK_PROVIDER)){
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener2);
+		}
 	}
 	
 	@Override
