@@ -419,7 +419,7 @@ public class MyService extends Service {
 	
 	public void sendTextMessage(String text, String phoneNumber) {
 		// Send a text message to a specified phone number.
-		Toast.makeText(this, "Send a text message", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "Send a text message", Toast.LENGTH_SHORT).show();
 		SmsManager smsManager = SmsManager.getDefault();
 		smsManager.sendTextMessage(phoneNumber, null, text, null, null);
 	}
