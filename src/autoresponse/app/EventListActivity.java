@@ -70,7 +70,7 @@ public class EventListActivity extends Activity {
     
     public void editConditions(View view){
     	Log.d(TAG, "entering closeActivity");
-    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
+//    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
     	if(selectedFromList!=null){
     		Intent intent = new Intent(this, ConditionSelectorActivity.class);
     		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
@@ -89,7 +89,7 @@ public class EventListActivity extends Activity {
 
 	public void editResponse(View view){
     	Log.d(TAG, "entering editResponse");
-    	Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
+//    	Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
     	if(selectedFromList != null) {
     		Intent intent = new Intent(this, ResponseSelectorActivity.class);
     		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
@@ -99,7 +99,7 @@ public class EventListActivity extends Activity {
     
     public void deleteEvent(View view){
     	Log.d(TAG, "entering deleteEvent");
-    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
+//    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
 
     	// delete the event
     	PreferenceHandler.deleteEvent(this, selectedFromList.replace(' ', '_'));
