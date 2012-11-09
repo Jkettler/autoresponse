@@ -137,6 +137,7 @@ public class LocationCreatorActivity extends Activity {
 			//Add new location to the storage
 			//Either launch the location selector or finish this activity, not sure which works better
 			Intent intent = new Intent(this, LocationSelectorActivity.class);
+			intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
 			startActivity(intent);
 		} catch (Exception e) {
 			Log.d(TAG, "Error in processing data"+e.getStackTrace()[0].getLineNumber());
