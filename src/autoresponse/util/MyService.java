@@ -118,8 +118,6 @@ public class MyService extends Service {
 			Log.d(TAG, "Registering LocationManager");
 			registerLocationManager();
 		}
-
-		triggerReminder("TESTING!!!");
 	}
 	
 	@Override
