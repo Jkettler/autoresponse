@@ -25,6 +25,7 @@ public class EventListActivity extends Activity {
 	private final String TAG = "EventListActivity";
 	private ListView mEventListView;
 	private String selectedFromList;
+	private List<AutoResponseEvent> mEvents; 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,8 @@ public class EventListActivity extends Activity {
     }
     
     private void populateEventList() {
-    	String[] names = getNames();
+    	mEvents = PreferenceHandler.getEventList(this);
+    	String[] names = getNames(mEvents);
         ArrayAdapter<String> adapter =
           new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, names);
         
@@ -52,9 +54,8 @@ public class EventListActivity extends Activity {
         });
     }
 
-    private String[] getNames() {
+    private String[] getNames(List<AutoResponseEvent> events) {
     	Log.d(TAG, "entering getNames");
-		List<AutoResponseEvent> events = PreferenceHandler.getEventList(this);
 		String[] out = new String[events.size()];
 		for(int i=0; i<out.length; i++){
 			out[i] = events.get(i).getName();
@@ -72,11 +73,21 @@ public class EventListActivity extends Activity {
     	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
     	if(selectedFromList!=null){
     		Intent intent = new Intent(this, ConditionSelectorActivity.class);
+    		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
         	startActivity(intent);
     	}
     }
     
-    public void editResponse(View view){
+    private AutoResponseEvent getEventFromList(String eventName) {
+    	for(AutoResponseEvent event : mEvents){
+    		if(event.getName().equals(eventName)){
+    			return event;
+    		}
+    	}
+    	return null;
+	}
+
+	public void editResponse(View view){
     	Log.d(TAG, "entering editResponse");
     	Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
     	if(selectedFromList != null) {
