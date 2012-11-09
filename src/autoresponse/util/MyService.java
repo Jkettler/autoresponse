@@ -292,10 +292,10 @@ public class MyService extends Service {
 		}
 		if(event.isIfDay()) {
 			// assuming event.getDays() returns a list of days where
-			// Sunday = 1, Monday = 2, ...
+			// Sunday = 0, Monday = 1, Tuesday = 2, ...
 			int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 			String days = event.getDays();
-			if(days.charAt(dayOfWeek-1) == 0) {
+			if(days.charAt(dayOfWeek-1) == '1') {
 				ifDay = true;
 			}
 		}

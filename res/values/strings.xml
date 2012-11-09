@@ -21,6 +21,13 @@
     <string name="day">Day</string>
     <string name="incoming_text">Incoming Text</string>
     <string name="continue_button_label">Continue</string>
+    <string name="day_mon">Mon</string>
+    <string name="day_tue">Tue</string>
+    <string name="day_wed">Wed</string>
+    <string name="day_thur">Thur</string>
+    <string name="day_fri">Fri</string>
+    <string name="day_sat">Sat</string>
+    <string name="day_sun">Sun</string>
     
     <string name="title_activity_response_selector">Select responses:</string>
     <string name="change_phone_mode">Change Phone Mode</string>
