@@ -167,7 +167,6 @@ public class MyService extends Service {
 				// This is the method that will be called when the location has changed
 				latitude = location.getLatitude();
 				longitude = location.getLongitude();
-				//makeToast("Location Updated");
 				notificationReceived();
 			}
 			// Other methods are note used, but must be implemented.
@@ -192,7 +191,6 @@ public class MyService extends Service {
 			public void onReceive(Context context, Intent intent) {
 				// This is the function that will be called when the time changes
 				int[] arr = getTimeOfDay();
-				makeToast("Time Receiver: "+arr[0]+":"+arr[1]+":"+arr[2]);
 				notificationReceived();
 			}
 		};
@@ -212,7 +210,6 @@ public class MyService extends Service {
 		smsReceiver = new BroadcastReceiver() {
 			public void onReceive(Context context, Intent intent) {
 				// This is the method that is called whenever an SMS message is received
-				makeToast("SMS Receiver");
 				
 				// get objects from bundle and save the phone number that sent the sms
 				if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
