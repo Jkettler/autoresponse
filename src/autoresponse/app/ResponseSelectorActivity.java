@@ -21,46 +21,85 @@ public class ResponseSelectorActivity extends Activity {
 	private static final String TAG = "ResponseSelectorActivity";
 	AutoResponseEvent mEvent;
 
+	private CheckBox mPhoneModeCheckbox;
+	private CheckBox mReminderCheckbox;
+	private CheckBox mTextResponseCheckbox;
+
+	private TimePicker reminderTimePicker;
+	private EditText mTextResponseEditText;
+	private RadioGroup mPhoneModeRadioGroup;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_response_selector);
 		Intent intent = getIntent();
 		mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
+		
+		mPhoneModeCheckbox = (CheckBox) findViewById(R.id.phone_mode_checkbox);
+		mReminderCheckbox = (CheckBox) findViewById(R.id.reminder_checkbox);
+		mTextResponseCheckbox = (CheckBox) findViewById(R.id.text_response_checkbox);
 
-		Log.d(TAG, "Response Selector started for event with name: "+mEvent.getName());
+		reminderTimePicker = (TimePicker) findViewById(R.id.reminder_time_picker);
+		mTextResponseEditText = (EditText) findViewById(R.id.text_response_edit);
+		mPhoneModeRadioGroup = (RadioGroup) findViewById(R.id.phone_mode_radio);
+
+		Log.d(TAG, "Response Selector started for event with name: " + mEvent.getName());
+		
+		mPhoneModeCheckbox.setChecked(mEvent.isChangePhoneMode());
+		mReminderCheckbox.setChecked(mEvent.isDisplayReminder());
+		mTextResponseCheckbox.setChecked(mEvent.isSendTextResponse());
+
+		reminderTimePicker.setCurrentHour(mEvent.getReminderTime() / 60);
+		reminderTimePicker.setCurrentMinute(mEvent.getReminderTime() % 60);
+		mTextResponseEditText.setText(mEvent.getTextResponse());
+
+		if (mEvent.isChangePhoneMode()) {
+			int id = -1;
+			switch (mEvent.getPhoneMode()) {
+			case AudioManager.RINGER_MODE_NORMAL:
+				id = R.id.normal_radio;
+				break;
+			case AudioManager.RINGER_MODE_SILENT:
+				id = R.id.silent_radio;
+				break;
+			case AudioManager.RINGER_MODE_VIBRATE:
+				id = R.id.vibrate_radio;
+				break;
+			}
+			
+			if(id != -1){
+				RadioButton button = (RadioButton) findViewById(id);
+				button.setChecked(true);
+			}
+		}
 	}
 
 	public void createEvent(View view) {
-		
-		Log.d(TAG, "Ok button clicked, creating event.");
-		
-		// TODO Pull in data from UI, add it to the AutoResponseEvent object
-		CheckBox phoneModeCheckbox = (CheckBox) findViewById(R.id.phone_mode_checkbox);
-		CheckBox reminderCheckbox = (CheckBox) findViewById(R.id.reminder_checkbox);
-		CheckBox textResponseCheckbox = (CheckBox) findViewById(R.id.text_response_checkbox);
-		
-		TimePicker reminderTimePicker = (TimePicker) findViewById(R.id.reminder_time_picker);
 
-		mEvent.setChangePhoneMode(phoneModeCheckbox.isChecked());
-		mEvent.setDisplayReminder(reminderCheckbox.isChecked());
-		mEvent.setSendTextResponse(textResponseCheckbox.isChecked());
-		
-		if(mEvent.isDisplayReminder()){
-			mEvent.setReminderTime(reminderTimePicker.getCurrentHour()*60+reminderTimePicker.getCurrentMinute());
+		Log.d(TAG, "Ok button clicked, creating event.");
+
+		// TODO Pull in data from UI, add it to the AutoResponseEvent object
+
+		mEvent.setChangePhoneMode(mPhoneModeCheckbox.isChecked());
+		mEvent.setDisplayReminder(mReminderCheckbox.isChecked());
+		mEvent.setSendTextResponse(mTextResponseCheckbox.isChecked());
+
+		if (mEvent.isDisplayReminder()) {
+			mEvent.setReminderTime(reminderTimePicker.getCurrentHour() * 60
+					+ reminderTimePicker.getCurrentMinute());
 		}
-			
-		if(mEvent.isSendTextResponse()){
-			EditText textResponseEditText = (EditText) findViewById(R.id.text_response_edit);
-			String textResponse = textResponseEditText.getText().toString();
-			Log.d(TAG, "Creating event with text response: "+textResponse);
+
+		if (mEvent.isSendTextResponse()) {
+
+			String textResponse = mTextResponseEditText.getText().toString();
+			Log.d(TAG, "Creating event with text response: " + textResponse);
 			mEvent.setTextResponse(textResponse);
 		}
-			
-		RadioGroup phoneModeRadioGroup = (RadioGroup) findViewById(R.id.phone_mode_radio);
-		int id = phoneModeRadioGroup.getCheckedRadioButtonId();
 
-		if (id != -1 && phoneModeCheckbox.isChecked()) {
+		int id = mPhoneModeRadioGroup.getCheckedRadioButtonId();
+
+		if (id != -1 && mPhoneModeCheckbox.isChecked()) {
 			RadioButton phoneModeButton = (RadioButton) findViewById(id);
 
 			String type = phoneModeButton.getText().toString();
@@ -68,26 +107,26 @@ public class ResponseSelectorActivity extends Activity {
 				Log.d(TAG, "Problem determining ringer mode.");
 			} else if (type.equals(getString(R.string.normal))) {
 				mEvent.setPhoneMode(AudioManager.RINGER_MODE_NORMAL);
-			} else if (type.equals(getString(R.string.silent))){
+			} else if (type.equals(getString(R.string.silent))) {
 				mEvent.setPhoneMode(AudioManager.RINGER_MODE_SILENT);
-			} else if (type.equals(getString(R.string.vibrate))){
+			} else if (type.equals(getString(R.string.vibrate))) {
 				mEvent.setPhoneMode(AudioManager.RINGER_MODE_VIBRATE);
 			}
 
 		}
 
 		// put the event in long term storage
-		
-		if(mEvent.getName() == null){
+
+		if (mEvent.getName() == null) {
 			Log.w(TAG, "Event passed via intent has no name.");
 		} else {
-			Log.d(TAG, "Storing event with name: "+mEvent.getName());
+			Log.d(TAG, "Storing event with name: " + mEvent.getName());
 		}
-		
+
 		PreferenceHandler.writeEvent(this, mEvent);
-		
+
 		// restart service
-    	Intent svc = new Intent(this, MyService.class);
+		Intent svc = new Intent(this, MyService.class);
 		stopService(svc);
 		startService(svc);
 

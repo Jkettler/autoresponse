@@ -92,6 +92,7 @@ public class EventListActivity extends Activity {
     	Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
     	if(selectedFromList != null) {
     		Intent intent = new Intent(this, ResponseSelectorActivity.class);
+    		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
     		startActivity(intent);
     	}
     }

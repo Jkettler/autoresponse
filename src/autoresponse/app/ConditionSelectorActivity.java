@@ -25,6 +25,8 @@ public class ConditionSelectorActivity extends Activity {
 	private TimePicker mStartTimePicker;
 	private TimePicker mEndTimePicker;
 	
+	private AutoResponseEvent mEvent; 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,18 +42,18 @@ public class ConditionSelectorActivity extends Activity {
 		mEndTimePicker = (TimePicker) findViewById(R.id.end_time_picker);
 		
 		//Fill in UI with details from event passed via intent
-		AutoResponseEvent event = getIntent().getParcelableExtra(AutoResponseEvent.EVENT_KEY);
-		if(event != null){
+		mEvent = getIntent().getParcelableExtra(AutoResponseEvent.EVENT_KEY);
+		if(mEvent != null){
 			//TODO days still...
-			mDrivingBox.setChecked(event.isIfDriving());
-			mLocationBox.setChecked(event.isIfLocation());
-			mTimeBox.setChecked(event.isIfTime());
-			mDayBox.setChecked(event.isIfDay());
-			mIncomingTextBox.setChecked(event.isIfRecieveText());
-			mStartTimePicker.setCurrentHour(event.getStartMinuteOfDay()/60);
-			mStartTimePicker.setCurrentMinute(event.getStartMinuteOfDay()%60);
-			mEndTimePicker.setCurrentHour(event.getEndMinuteOfDay()/60);
-			mEndTimePicker.setCurrentMinute(event.getEndMinuteOfDay()%60);
+			mDrivingBox.setChecked(mEvent.isIfDriving());
+			mLocationBox.setChecked(mEvent.isIfLocation());
+			mTimeBox.setChecked(mEvent.isIfTime());
+			mDayBox.setChecked(mEvent.isIfDay());
+			mIncomingTextBox.setChecked(mEvent.isIfRecieveText());
+			mStartTimePicker.setCurrentHour(mEvent.getStartMinuteOfDay()/60);
+			mStartTimePicker.setCurrentMinute(mEvent.getStartMinuteOfDay()%60);
+			mEndTimePicker.setCurrentHour(mEvent.getEndMinuteOfDay()/60);
+			mEndTimePicker.setCurrentMinute(mEvent.getEndMinuteOfDay()%60);
 		}
 	}
 	
@@ -60,24 +62,25 @@ public class ConditionSelectorActivity extends Activity {
 		//TODO: (beta) disable the time pickers unless the corresponding checkbox is checked 
 		
 		// TODO Add days to UI and then pull them in too.
+		if(mEvent == null){
+			mEvent = new AutoResponseEvent();
+		}
+		mEvent.setIfDay(mDayBox.isChecked());
+		mEvent.setIfDriving(mDrivingBox.isChecked());
+		mEvent.setIfLocation(mLocationBox.isChecked());
+		mEvent.setIfTime(mTimeBox.isChecked());
+		mEvent.setIfRecieveText(mIncomingTextBox.isChecked());
 		
-		AutoResponseEvent event = new AutoResponseEvent();
-		event.setIfDay(mDayBox.isChecked());
-		event.setIfDriving(mDrivingBox.isChecked());
-		event.setIfLocation(mLocationBox.isChecked());
-		event.setIfTime(mTimeBox.isChecked());
-		event.setIfRecieveText(mIncomingTextBox.isChecked());
+		mEvent.setName(getIntent().getStringExtra(HomeScreenActivity.EVENT_NAME));
 		
-		event.setName(getIntent().getStringExtra(HomeScreenActivity.EVENT_NAME));
-		
-		if(event.getName() == null){
+		if(mEvent.getName() == null){
 			Log.w(TAG, "Event name taken from intent was null.");
 		}
 		
 		
-		if(event.isIfTime()){
-			event.setStartMinuteOfDay(getMinutes(mStartTimePicker));
-			event.setEndMinuteOfDay(getMinutes(mEndTimePicker));
+		if(mEvent.isIfTime()){
+			mEvent.setStartMinuteOfDay(getMinutes(mStartTimePicker));
+			mEvent.setEndMinuteOfDay(getMinutes(mEndTimePicker));
 		}
 
 		// Verify that time range given is valid
@@ -103,7 +106,7 @@ public class ConditionSelectorActivity extends Activity {
 			Log.d(TAG, "Continue button was clicked without location checked.");
 			intent = new Intent(this, ResponseSelectorActivity.class);
 		}
-		intent.putExtra(AutoResponseEvent.EVENT_KEY, event);
+		intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
 		startActivity(intent);
 	}
 
