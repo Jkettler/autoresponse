@@ -118,6 +118,8 @@ public class MyService extends Service {
 			Log.d(TAG, "Registering LocationManager");
 			registerLocationManager();
 		}
+
+		triggerReminder("TESTING!!!");
 	}
 	
 	@Override
@@ -408,7 +410,7 @@ public class MyService extends Service {
 		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		Notification note=new Notification(R.drawable.ic_launcher,"Status message!",System.currentTimeMillis());
 		PendingIntent i=PendingIntent.getActivity(this, 0, new Intent(this, NotificationMessage.class),0);
-		note.setLatestEventInfo(this, "Auto Response",message, i);
+		note.setLatestEventInfo(this, "Auto Response", message, i);
 		note.vibrate=new long[] {500L, 200L, 200L, 500L}; 
 		note.flags|=Notification.FLAG_AUTO_CANCEL;
 		
