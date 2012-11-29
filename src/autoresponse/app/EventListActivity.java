@@ -63,11 +63,6 @@ public class EventListActivity extends Activity {
 		return out;
 	}
 
-	public void closeActivity(View view){
-		Log.d(TAG, "entering closeActivity");
-    	finish();
-    }
-    
     public void editConditions(View view){
     	Log.d(TAG, "entering closeActivity");
 //    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
