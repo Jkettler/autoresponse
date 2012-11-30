@@ -35,18 +35,17 @@ public class EventDisplayActivity extends Activity {
 				event.isChangePhoneMode(), event.isDisplayReminder(),
 				event.isSendTextResponse() };
 
-		// String[] details = {
-		// event.getTimeString(),
-		// event.getDayString(),
-		// event.getLocationString(),
-		// event.getRecieveTextString(),
-		// event.getChangePhoneModeString(),
-		// event.getDisplayReminderString(),
-		// event.getSendTextResponseString()
-		// };
+		 String[] details = {
+		 event.getTimeString(),
+		 event.getDayString(),
+		 event.getLocationString(),
+		 event.getRecieveTextString(),
+		 event.getChangePhoneModeString(),
+		 event.getDisplayReminderString(),
+		 event.getSendTextResponseString()
+		 };
 
-		String[] details = { "test", "test", "test", "test", "test", "test",
-				"test" };
+//		String[] details = { "test", "test", "test", "test", "test", "test", "test" };
 
 		if (!(textViews.length == displayTextView.length && displayTextView.length == details.length)) {
 			Toast.makeText(this, "Problem displaying event", Toast.LENGTH_SHORT)

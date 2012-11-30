@@ -2,17 +2,20 @@ package autoresponse.util;
 
 import java.util.List;
 
+import android.media.AudioManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import autoresponse.app.R;
 
 public class AutoResponseEvent implements Parcelable {
 
 	public static final String EVENT_KEY = "AUTORESPONSEEVENT";
 	private static final String TAG = "AutoResponseEvent";
 
+	private static final String[] DAY_ABBREV = {"Sun", "M","Tu","W","Th","F", "Sat"};
+	
 	// I ignored the mName convention since this isn't strictly an android class
-
 	private String name;
 
 	// Context instance variables
@@ -77,7 +80,7 @@ public class AutoResponseEvent implements Parcelable {
 		// in the same order inside the constructor
 
 		dest.writeString(name);
-		
+
 		// For reasons that escape me, there is no writeBoolean function, so
 		// I'm cheating and using a ternary here and a comparison in the
 		// constructor
@@ -177,10 +180,18 @@ public class AutoResponseEvent implements Parcelable {
 		this.ifDay = ifDay;
 	}
 
+	/**
+	 * 
+	 * @return A binary string of flags for each day of the week 
+	 */
 	public String getDays() {
 		return days;
 	}
 
+	/**
+	 * 
+	 * @param days A binary string of flags for each day of the week 
+	 */
 	public void setDays(String days) {
 		this.days = days;
 	}
@@ -225,10 +236,18 @@ public class AutoResponseEvent implements Parcelable {
 		this.displayReminder = displayReminder;
 	}
 
+	/**
+	 * Returns the time of day a notification will be displayed
+	 * @return The number of <b>minutes</b> into the day to display a notification
+	 */
 	public int getReminderTime() {
 		return reminderTime;
 	}
 
+	/**
+	 * Set the number of minutes into the day to fire a reminder
+	 * @param reminderTime The time of day in minutes to send a notification
+	 */
 	public void setReminderTime(int reminderTime) {
 		this.reminderTime = reminderTime;
 	}
@@ -299,38 +318,90 @@ public class AutoResponseEvent implements Parcelable {
 		return match;
 	}
 
-	public String getTimeString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// Context Strings
 
-	public String getSendTextResponseString() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getTimeString() {
+		// 9am-3pm
+		StringBuffer sb = new StringBuffer();
+		sb.append(getClockString(getStartMinuteOfDay()));
+		sb.append(" - ");
+		sb.append(getClockString(getEndMinuteOfDay()));
+		return sb.toString();
 	}
 
 	public String getDayString() {
-		// TODO Auto-generated method stub
-		return null;
+		// "M/Tu/W/Th/F"
+		StringBuffer sb = new StringBuffer();
+		String days = getDays();
+		for(int i = 0; i<7; i++){
+			if(days.charAt(i) == '1'){
+				if(sb.length() > 0){
+					sb.append('/');
+				}
+				sb.append(DAY_ABBREV[i]);
+			}
+		}
+		return sb.toString();
 	}
 
 	public String getLocationString() {
-		// TODO Auto-generated method stub
-		return null;
+		// "UT"
+		return getLocation();
 	}
 
 	public String getRecieveTextString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
+	// Response Strings
+
 	public String getChangePhoneModeString() {
-		// TODO Auto-generated method stub
-		return null;
+		String mode = "";
+		if(!isChangePhoneMode()){
+			return mode;
+		}
+		switch (getPhoneMode()) {
+			case AudioManager.RINGER_MODE_NORMAL:
+				mode = "Normal";
+				break;
+			case AudioManager.RINGER_MODE_SILENT:
+				mode = "Silent";
+				break;
+			case AudioManager.RINGER_MODE_VIBRATE:
+				mode = "Vibrate";
+				break;
+		}
+		return mode;
 	}
 
 	public String getDisplayReminderString() {
-		// TODO Auto-generated method stub
-		return null;
+		int minutes = getReminderTime();
+		return getClockString(minutes);
+	}
+
+	private String getClockString(int minuteOfDay) {
+		int hour = minuteOfDay / 60;
+		int minute = minuteOfDay % 60;
+		String label = hour < 12 ? "am" : "pm";
+		
+		//I'm going to be a bit lazy and assume the user won't want 24 hour time
+		//If it's after noon, subtract 12 hours, if it's midnight or
+		//noon, set the hour to 12
+		hour %= 12;
+		if(hour == 0 ){
+			hour += 12;
+		}
+		
+		//Append a zero if there number of minutes is single digit
+		String extraDigit = minute < 10 ? "0" : ""; 
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(hour).append(':').append(extraDigit).append(minute).append(label);
+		
+		return builder.toString();
+	}
+
+	public String getSendTextResponseString() {
+		return getTextResponse();
 	}
 }
