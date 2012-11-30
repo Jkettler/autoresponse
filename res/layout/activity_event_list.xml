@@ -4,49 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <!-- TODO add a list view here -->
-
     <ListView
         android:id="@+id/event_list_view"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:choiceMode="singleChoice"
         android:layout_weight="3" />
-
-    <RelativeLayout
-        android:id="@+id/RelativeLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="2"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/edit_conditions_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="editConditions"
-            android:text="@string/edit_conditions" />
-
-        <Button
-            android:id="@+id/edit_response_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/edit_conditions_button"
-            android:layout_alignRight="@+id/edit_conditions_button"
-            android:layout_below="@+id/edit_conditions_button"
-            android:onClick="editResponse"
-            android:text="@string/edit_response" />
-
-        <Button
-            android:id="@+id/delete_event_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/edit_conditions_button"
-            android:layout_alignRight="@+id/edit_conditions_button"
-            android:layout_below="@+id/edit_response_button"
-            android:onClick="deleteEvent"
-            android:text="@string/delete_event" />
-    </RelativeLayout>
 
 </LinearLayout>
