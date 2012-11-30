@@ -132,7 +132,7 @@ public class ResponseSelectorActivity extends Activity {
 
 		// Go back to the home screen but pass a flag so that you can't hit back
 		// and wind up here.
-		Intent intent = new Intent(this, HomeScreenActivity.class);
+		Intent intent = new Intent(this, EventListActivity.class);
 		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 }
