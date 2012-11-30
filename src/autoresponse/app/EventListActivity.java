@@ -123,16 +123,6 @@ public class EventListActivity extends Activity {
 		return out;
 	}
 
-    public void editConditions(View view){
-    	Log.d(TAG, "entering closeActivity");
-//    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
-    	if(selectedFromList!=null){
-    		Intent intent = new Intent(this, ConditionSelectorActivity.class);
-    		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
-        	startActivity(intent);
-    	}
-    }
-    
     private AutoResponseEvent getEventFromList(String eventName) {
     	for(AutoResponseEvent event : mEvents){
     		if(event.getName().equals(eventName)){
@@ -142,34 +132,4 @@ public class EventListActivity extends Activity {
     	return null;
 	}
 
-	public void editResponse(View view){
-    	Log.d(TAG, "entering editResponse");
-//    	Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
-    	if(selectedFromList != null) {
-    		Intent intent = new Intent(this, ResponseSelectorActivity.class);
-    		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
-    		startActivity(intent);
-    	}
-    }
-    
-    public void deleteEvent(View view){
-    	Log.d(TAG, "entering deleteEvent");
-//    	Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
-
-    	// delete the event
-    	PreferenceHandler.deleteEvent(this, selectedFromList.replace(' ', '_'));
-    	
-    	// empty instance variables
-    	selectedFromList = null;
-    	
-    	
-    	// Restarting service
-    	Intent svc = new Intent(this, MyService.class);
-		stopService(svc);
-		startService(svc);
-		
-		// redraw view with updated event list
-		populateEventList();
-		view.invalidate();
-    }
 }

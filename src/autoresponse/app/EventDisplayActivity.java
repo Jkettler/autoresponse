@@ -2,13 +2,26 @@ package autoresponse.app;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import autoresponse.util.AutoResponseEvent;
+import autoresponse.util.MyService;
+import autoresponse.util.PreferenceHandler;
 
 public class EventDisplayActivity extends Activity {
+
+	private static final String TAG = "EventDisplayActivity";
+
+	private static final int DIALOG_DELETE_ID = 0;
 
 	private AutoResponseEvent event;
 
@@ -35,17 +48,11 @@ public class EventDisplayActivity extends Activity {
 				event.isChangePhoneMode(), event.isDisplayReminder(),
 				event.isSendTextResponse() };
 
-		 String[] details = {
-		 event.getTimeString(),
-		 event.getDayString(),
-		 event.getLocationString(),
-		 event.getRecieveTextString(),
-		 event.getChangePhoneModeString(),
-		 event.getDisplayReminderString(),
-		 event.getSendTextResponseString()
-		 };
-
-//		String[] details = { "test", "test", "test", "test", "test", "test", "test" };
+		String[] details = { event.getTimeString(), event.getDayString(),
+				event.getLocationString(), event.getRecieveTextString(),
+				event.getChangePhoneModeString(),
+				event.getDisplayReminderString(),
+				event.getSendTextResponseString() };
 
 		if (!(textViews.length == displayTextView.length && displayTextView.length == details.length)) {
 			Toast.makeText(this, "Problem displaying event", Toast.LENGTH_SHORT)
@@ -83,5 +90,74 @@ public class EventDisplayActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_event_display, menu);
 		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		// TODO
+		case R.id.edit_event_context_menu_item:
+			editConditions();
+			return true;
+		case R.id.edit_event_response_menu_item:
+			editResponse();
+			return true;
+		case R.id.delete_event_menu_item:
+			showDialog(DIALOG_DELETE_ID);
+			return true;
+		}
+		return false;
+	}
+
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog = null;
+		if (id == DIALOG_DELETE_ID) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+			builder.setMessage(R.string.delete_question)
+					.setCancelable(false)
+					.setPositiveButton(R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									deleteEvent();
+								}
+							}).setNegativeButton(R.string.no, null);
+			dialog = builder.create();
+		}
+		return dialog;
+	}
+
+	private void editConditions() {
+		Log.d(TAG, "entering closeActivity");
+		// Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(this, ConditionSelectorActivity.class);
+		intent.putExtra(AutoResponseEvent.EVENT_KEY, event);
+		startActivity(intent);
+	}
+
+	private void editResponse() {
+		Log.d(TAG, "entering editResponse");
+		// Toast.makeText(this, selectedFromList, Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(this, ResponseSelectorActivity.class);
+		intent.putExtra(AutoResponseEvent.EVENT_KEY, event);
+		startActivity(intent);
+	}
+
+	private void deleteEvent() {
+		Log.d(TAG, "entering deleteEvent");
+		// Toast.makeText(this, selectedFromList, Toast.LENGTH_SHORT).show();
+
+		// delete the event
+		PreferenceHandler.deleteEvent(this, event.getName().replace(' ', '_'));
+
+		// Restarting service
+		Intent svc = new Intent(this, MyService.class);
+		stopService(svc);
+		startService(svc);
+
+		// Go back to the home screen but pass a flag so that you can't hit back
+		// and wind up here.
+		Intent intent = new Intent(this, EventListActivity.class);
+		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 }

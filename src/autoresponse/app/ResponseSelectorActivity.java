@@ -78,8 +78,6 @@ public class ResponseSelectorActivity extends Activity {
 
 		Log.d(TAG, "Ok button clicked, creating event.");
 
-		// TODO Pull in data from UI, add it to the AutoResponseEvent object
-
 		mEvent.setChangePhoneMode(mPhoneModeCheckbox.isChecked());
 		mEvent.setDisplayReminder(mReminderCheckbox.isChecked());
 		mEvent.setSendTextResponse(mTextResponseCheckbox.isChecked());

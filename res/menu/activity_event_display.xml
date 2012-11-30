@@ -12,7 +12,7 @@
         android:title="Edit Response"/>
     <item
         android:id="@+id/delete_event_menu_item"
-        android:icon="@drawable/ic_menu_edit"
+        android:icon="@drawable/ic_menu_delete"
         android:showAsAction="never"
         android:title="Delete Event"/>
 </menu>
