@@ -6,14 +6,18 @@ import autoresponse.util.MyService;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
@@ -26,6 +30,8 @@ public class EventListActivity extends Activity {
 	private ListView mEventListView;
 	private String selectedFromList;
 	private List<AutoResponseEvent> mEvents; 
+
+	public static final String EVENT_NAME = "EVENT_NAME";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,55 @@ public class EventListActivity extends Activity {
         //TODO: (beta) make it possible to turn off and on a particular event
         populateEventList();
     }
+    
+    public boolean onCreateOptionsMenu(Menu menu){
+    	super.onCreateOptionsMenu(menu);
+    	
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.event_list_menu, menu);
+    	return true;
+    }
+    
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case R.id.new_event_menu_item:
+    		createEvent();
+    		return true;
+    	}
+    	return false;
+    }
+    
+	private void createEvent() {
+		Log.d(TAG, "Create event menu-button clicked");
+
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Enter a name");
+
+		// Set an EditText view to get user input
+		final EditText input = new EditText(this);
+		alert.setView(input);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String eventName = input.getText().toString();
+				Intent intent = new Intent(getBaseContext(),
+						ConditionSelectorActivity.class);
+				intent.putExtra(EVENT_NAME, eventName);
+				Log.d(TAG, "Starting ConditionSelector with event name: "+eventName);
+				startActivity(intent);
+			}
+		});
+
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
+
+		alert.show();
+
+	}
     
     private void populateEventList() {
     	mEvents = PreferenceHandler.getEventList(this);
