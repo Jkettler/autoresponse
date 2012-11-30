@@ -298,4 +298,39 @@ public class AutoResponseEvent implements Parcelable {
 		}
 		return match;
 	}
+
+	public String getTimeString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getSendTextResponseString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getDayString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getLocationString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getRecieveTextString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getChangePhoneModeString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getDisplayReminderString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

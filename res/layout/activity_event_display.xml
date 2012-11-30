@@ -52,7 +52,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/event_viewer_location_textView"
+                android:id="@+id/event_viewer_recieveText_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="If a text is recieved."

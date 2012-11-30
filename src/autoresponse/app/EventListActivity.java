@@ -39,6 +39,8 @@ public class EventListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
         
+        //TODO: NEED TO ADD SERVICE CODE FROM HOME SCREEN
+        
         mEventListView = (ListView) findViewById(R.id.event_list_view);
 
         //TODO: (beta) make it possible to turn off and on a particular event
@@ -98,13 +100,16 @@ public class EventListActivity extends Activity {
     	mEvents = PreferenceHandler.getEventList(this);
     	String[] names = getNames(mEvents);
         ArrayAdapter<String> adapter =
-          new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, names);
+          new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
         
         mEventListView.setAdapter(adapter);
 
         mEventListView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
         		selectedFromList =(String) (mEventListView.getItemAtPosition(myItemInt));
+        		Intent intent =  new Intent(myView.getContext(), EventDisplayActivity.class);
+        		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
+        		startActivity(intent);
         	}                 
         });
     }
