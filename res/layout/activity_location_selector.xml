@@ -11,13 +11,6 @@
         android:layout_weight="3"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/locations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/my_locations"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
         <ListView
             android:id="@+id/location_list_view"
             android:layout_width="fill_parent"

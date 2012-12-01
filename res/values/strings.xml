@@ -38,9 +38,10 @@
     <string name="add_location">Add Current Location</string>
     <string name="ok">OK</string>
     <string name="title_activity_location_creator">Create Location</string>
-    <string name="add_current_location">Add Current Location</string>
-    <string name="add_location_name">Add Location Name</string>
-    <string name="enter_a_radius_in_miles_">Enter a radius (in miles):</string>
+    <string name="add_current_location">Add</string>
+    <string name="add_location_name">Name:</string>
+    <string name="enter_a_radius_in_miles_">Radius:</string>
+    <string name="radius_hint_text">(miles)</string>
     <string name="title_activity_event_display">View Event</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
