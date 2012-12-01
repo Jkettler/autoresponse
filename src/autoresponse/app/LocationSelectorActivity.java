@@ -37,12 +37,11 @@ public class LocationSelectorActivity extends Activity {
 		String[] items = locations.keySet().toArray(
 				new String[locations.keySet().size()]);
 
-		if (items.length > 0) {
 
+		mEventListView = (ListView) findViewById(R.id.location_list_view);
+		if (items.length > 0) {
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1, items);
-
-			mEventListView = (ListView) findViewById(R.id.location_list_view);
 
 			mEventListView.setAdapter(adapter);
 
@@ -55,10 +54,12 @@ public class LocationSelectorActivity extends Activity {
 				}
 			});
 		} else {
-			// TODO display textview
+			mEventListView.setVisibility(View.GONE);
+			findViewById(R.id.location_list_empty_textView).setVisibility(
+					View.VISIBLE);
 		}
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
