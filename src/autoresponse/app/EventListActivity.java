@@ -39,7 +39,13 @@ public class EventListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
         
-        //TODO: NEED TO ADD SERVICE CODE FROM HOME SCREEN
+        try {
+			// start service
+			Intent svc = new Intent(this, MyService.class);
+			startService(svc);
+		} catch (Exception e) {
+			Log.d(TAG, "error in starting service");
+		}
         
         mEventListView = (ListView) findViewById(R.id.event_list_view);
 
