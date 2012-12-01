@@ -18,7 +18,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import autoresponse.util.AutoResponseEvent;
@@ -29,47 +32,47 @@ public class EventListActivity extends Activity {
 	private final String TAG = "EventListActivity";
 	private ListView mEventListView;
 	private String selectedFromList;
-	private List<AutoResponseEvent> mEvents; 
+	private List<AutoResponseEvent> mEvents;
 
 	public static final String EVENT_NAME = "EVENT_NAME";
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    	Log.d(TAG, "entering onCreate");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_list);
-        
-        try {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "entering onCreate");
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_event_list);
+
+		try {
 			// start service
 			Intent svc = new Intent(this, MyService.class);
 			startService(svc);
 		} catch (Exception e) {
 			Log.d(TAG, "error in starting service");
 		}
-        
-        mEventListView = (ListView) findViewById(R.id.event_list_view);
 
-        //TODO: (beta) make it possible to turn off and on a particular event
-        populateEventList();
-    }
-    
-    public boolean onCreateOptionsMenu(Menu menu){
-    	super.onCreateOptionsMenu(menu);
-    	
-    	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.event_list_menu, menu);
-    	return true;
-    }
-    
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    	case R.id.new_event_menu_item:
-    		createEvent();
-    		return true;
-    	}
-    	return false;
-    }
-    
+		mEventListView = (ListView) findViewById(R.id.event_list_view);
+
+		// TODO: (beta) make it possible to turn off and on a particular event
+		populateEventList();
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.event_list_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.new_event_menu_item:
+			createEvent();
+			return true;
+		}
+		return false;
+	}
+
 	private void createEvent() {
 		Log.d(TAG, "Create event menu-button clicked");
 
@@ -87,7 +90,8 @@ public class EventListActivity extends Activity {
 				Intent intent = new Intent(getBaseContext(),
 						ConditionSelectorActivity.class);
 				intent.putExtra(EVENT_NAME, eventName);
-				Log.d(TAG, "Starting ConditionSelector with event name: "+eventName);
+				Log.d(TAG, "Starting ConditionSelector with event name: "
+						+ eventName);
 				startActivity(intent);
 			}
 		});
@@ -101,41 +105,53 @@ public class EventListActivity extends Activity {
 		alert.show();
 
 	}
-    
-    private void populateEventList() {
-    	mEvents = PreferenceHandler.getEventList(this);
-    	String[] names = getNames(mEvents);
-        ArrayAdapter<String> adapter =
-          new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
-        
-        mEventListView.setAdapter(adapter);
 
-        mEventListView.setOnItemClickListener(new OnItemClickListener() {
-        	public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
-        		selectedFromList =(String) (mEventListView.getItemAtPosition(myItemInt));
-        		Intent intent =  new Intent(myView.getContext(), EventDisplayActivity.class);
-        		intent.putExtra(AutoResponseEvent.EVENT_KEY, getEventFromList(selectedFromList));
-        		startActivity(intent);
-        	}                 
-        });
-    }
+	private void populateEventList() {
+		mEvents = PreferenceHandler.getEventList(this);
+		if (mEvents.size() > 0) {
+			String[] names = getNames(mEvents);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, names);
 
-    private String[] getNames(List<AutoResponseEvent> events) {
-    	Log.d(TAG, "entering getNames");
+			mEventListView.setAdapter(adapter);
+
+			mEventListView.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> myAdapter, View myView,
+						int myItemInt, long mylng) {
+					selectedFromList = (String) (mEventListView
+							.getItemAtPosition(myItemInt));
+					Intent intent = new Intent(myView.getContext(),
+							EventDisplayActivity.class);
+					intent.putExtra(AutoResponseEvent.EVENT_KEY,
+							getEventFromList(selectedFromList));
+					startActivity(intent);
+				}
+			});
+		} else {
+			//If there are no events, we need to tell the user this and how
+			//they can create new ones
+			TextView tv = (TextView) findViewById(R.id.event_list_empty_textView);
+			mEventListView.setVisibility(View.GONE);
+			tv.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private String[] getNames(List<AutoResponseEvent> events) {
+		Log.d(TAG, "entering getNames");
 		String[] out = new String[events.size()];
-		for(int i=0; i<out.length; i++){
+		for (int i = 0; i < out.length; i++) {
 			out[i] = events.get(i).getName();
 		}
 		return out;
 	}
 
-    private AutoResponseEvent getEventFromList(String eventName) {
-    	for(AutoResponseEvent event : mEvents){
-    		if(event.getName().equals(eventName)){
-    			return event;
-    		}
-    	}
-    	return null;
+	private AutoResponseEvent getEventFromList(String eventName) {
+		for (AutoResponseEvent event : mEvents) {
+			if (event.getName().equals(eventName)) {
+				return event;
+			}
+		}
+		return null;
 	}
 
 }
