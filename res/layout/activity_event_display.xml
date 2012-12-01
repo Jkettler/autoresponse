@@ -2,15 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/event_viewer_eventName_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:text="Event:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,9 +14,13 @@
             android:id="@+id/event_viewer_condition_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
-            android:text="Conditions:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textColor="#FF909090"
+            android:text="CONDITIONS"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,28 +32,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time:"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
 
             <TextView
                 android:id="@+id/event_viewer_day_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Day: "
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
 
             <TextView
                 android:id="@+id/event_viewer_location_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Location: "
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
 
             <TextView
                 android:id="@+id/event_viewer_recieveText_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="If a text is recieved."
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
         </LinearLayout>
     </LinearLayout>
 
@@ -69,9 +66,12 @@
             android:id="@+id/event_viewer_response_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
-            android:text="Response:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textColor="#FF909090"
+            android:text="RESPONSE" />
+         <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,21 +83,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Set Phone Mode:"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
 
             <TextView
                 android:id="@+id/event_viewer_reminder_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reminder at:"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
 
             <TextView
                 android:id="@+id/event_viewer_textResponse_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Send text message with contents:"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                 />
         </LinearLayout>
     </LinearLayout>
 

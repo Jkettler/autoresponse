@@ -32,7 +32,10 @@ public class EventDisplayActivity extends Activity {
 
 		event = (AutoResponseEvent) getIntent().getParcelableExtra(
 				AutoResponseEvent.EVENT_KEY);
-
+		
+		//Set the activity title to the name of the event.
+		setTitle(event.getName());
+		
 		TextView[] textViews = {
 				(TextView) findViewById(R.id.event_viewer_time_textView),
 				(TextView) findViewById(R.id.event_viewer_day_textView),
@@ -75,14 +78,6 @@ public class EventDisplayActivity extends Activity {
 			label += ' ' + detail;
 			textView.setText(label);
 		}
-
-		// Process the title:
-
-		TextView eventNameView = (TextView) findViewById(R.id.event_viewer_eventName_textView);
-		label = eventNameView.getText().toString();
-		label += ' ' + event.getName();
-
-		eventNameView.setText(label);
 
 	}
 
