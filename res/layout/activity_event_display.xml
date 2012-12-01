@@ -31,6 +31,7 @@
                 android:id="@+id/event_viewer_time_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Time:"
                  />
 
@@ -38,6 +39,7 @@
                 android:id="@+id/event_viewer_day_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Day: "
                  />
 
@@ -45,6 +47,7 @@
                 android:id="@+id/event_viewer_location_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Location: "
                  />
 
@@ -52,6 +55,7 @@
                 android:id="@+id/event_viewer_recieveText_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="If a text is recieved."
                  />
         </LinearLayout>
@@ -67,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FF909090"
+            android:layout_marginTop="8dp"
             android:text="RESPONSE" />
          <View
             android:layout_width="match_parent"
@@ -82,6 +87,7 @@
                 android:id="@+id/event_viewer_phoneMode_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Set Phone Mode:"
                  />
 
@@ -89,6 +95,7 @@
                 android:id="@+id/event_viewer_reminder_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Reminder at:"
                  />
 
@@ -96,6 +103,7 @@
                 android:id="@+id/event_viewer_textResponse_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Send text message with contents:"
                  />
         </LinearLayout>
