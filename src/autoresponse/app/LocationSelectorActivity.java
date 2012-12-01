@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,60 +23,80 @@ public class LocationSelectorActivity extends Activity {
 
 	private String selectedLocationName;
 	private boolean locationSelected = false;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_location_selector);
+		Intent intent = getIntent();
+		mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
+
+		// pull in location list
+		HashMap<String, double[]> locations = PreferenceHandler
+				.getLocationList(getApplicationContext());
+		String[] items = locations.keySet().toArray(
+				new String[locations.keySet().size()]);
+
+		if (items.length > 0) {
+
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, items);
+
+			mEventListView = (ListView) findViewById(R.id.location_list_view);
+
+			mEventListView.setAdapter(adapter);
+
+			mEventListView.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> myAdapter, View myView,
+						int myItemInt, long mylng) {
+					selectedLocationName = (String) (mEventListView
+							.getItemAtPosition(myItemInt));
+					createResponse();
+				}
+			});
+		} else {
+			// TODO display textview
+		}
+	}
 	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_selector);
-        Intent intent = getIntent();
-        mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
-        
-        //pull in location list
-        HashMap<String, double[]> locations = PreferenceHandler.getLocationList(getApplicationContext());
-        String[] items = locations.keySet().toArray(new String[locations.keySet().size()]);
-        
-        
-        ArrayAdapter<String> adapter =
-          new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, items);
-        
-        mEventListView = (ListView) findViewById(R.id.location_list_view);
-        
-        mEventListView.setAdapter(adapter);
-        
-        mEventListView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
-              selectedLocationName =(String) (mEventListView.getItemAtPosition(myItemInt));
-              locationSelected = true;
-            }                 
-      });
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
 
-    }
-    
-    public void createResponse(View view){
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_location_selector, menu);
+		return true;
+	}
 
-    	if(locationSelected){
-    		//TODO Start response selector and pass along whatever data we got from the condition selector
-    		//Don't forget to include the location too
-    		
-    		//Set the location
-    		mEvent.setLocation(selectedLocationName);
-    		
-    		//Pass the updated event to the response selector
-    		Intent intent = new Intent(this, ResponseSelectorActivity.class);
-    		intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
-    		startActivity(intent);
-    		
-    	} else{
-    		Toast.makeText(getApplicationContext(), "Please select a location", Toast.LENGTH_SHORT).show();
-    	}
-    }
-    
-    public void addLocation(View view){
-    	//Launch location creator
-    	//Again, pass data from previous activities around
-    	//This will just be whatever came from the condition selector
-    	Intent intent = new Intent(this, LocationCreatorActivity.class);
-    	intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
-    	startActivity(intent);
-    }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.new_location_menu_item:
+			addLocation();
+			return true;
+		}
+		return false;
+	}
+
+	private void createResponse() {
+
+		// Start response selector and pass along whatever data we got from
+		// the condition selector
+
+		// Set the location
+		mEvent.setLocation(selectedLocationName);
+
+		// Pass the updated event to the response selector
+		Intent intent = new Intent(this, ResponseSelectorActivity.class);
+		intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
+		startActivity(intent);
+
+	}
+
+	private void addLocation() {
+		// Launch location creator
+		// Again, pass data from previous activities around
+		// This will just be whatever came from the condition selector
+		Intent intent = new Intent(this, LocationCreatorActivity.class);
+		intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
+		startActivity(intent);
+	}
 }

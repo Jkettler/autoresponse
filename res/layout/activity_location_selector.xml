@@ -18,28 +18,4 @@
             android:choiceMode="singleChoice" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/add_location_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:onClick="addLocation"
-            android:text="@string/add_location" />
-
-        <Button
-            android:id="@+id/select_location_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/add_location_button"
-            android:layout_alignRight="@+id/add_location_button"
-            android:layout_below="@+id/add_location_button"
-            android:onClick="createResponse"
-            android:text="@string/ok" />
-    </RelativeLayout>
-
 </LinearLayout>
