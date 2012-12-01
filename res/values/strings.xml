@@ -45,7 +45,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete_question">Are you sure you want to delete this event?</string>
-    <string name="event_list_empty_text">You don\'t have any events yet. Use the menu button to create one.</string>
+    <string name="event_list_empty_text">You don\'t have any events yet. Create one using the menu button.</string>
     
 
 </resources>
