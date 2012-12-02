@@ -47,7 +47,7 @@ public class EventListActivity extends Activity {
 			Intent svc = new Intent(this, MyService.class);
 			startService(svc);
 		} catch (Exception e) {
-			Log.d(TAG, "error in starting service");
+			Log.w(TAG, "error in starting service");
 		}
 
 		mEventListView = (ListView) findViewById(R.id.event_list_view);

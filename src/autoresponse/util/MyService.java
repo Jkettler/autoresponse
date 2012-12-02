@@ -72,6 +72,7 @@ public class MyService extends Service {
 	
 	@Override
 	public void onCreate() {
+		super.onCreate();
 		Log.d(TAG, "Service: onCreate");
 		
 		events = PreferenceHandler.getEventList(getApplicationContext());
@@ -136,6 +137,7 @@ public class MyService extends Service {
 	
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		Log.d(TAG, "Service: onDestroy");
 		
 		// Unregister receivers and location manager
@@ -247,6 +249,7 @@ public class MyService extends Service {
 		for(AutoResponseEvent event : events) {
 			// Check to see if event conditions are matched. If so, execute the response.
 			if(conditionsMet(event)) {
+				Log.d(TAG, "Conditions met for event: "+event.getName());
 				executeResponse(event);
 			}
 		}

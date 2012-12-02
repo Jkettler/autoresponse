@@ -32,9 +32,10 @@ public class EventDisplayActivity extends Activity {
 
 		event = (AutoResponseEvent) getIntent().getParcelableExtra(
 				AutoResponseEvent.EVENT_KEY);
+		Log.d(TAG, "Displaying event: "+event.getName());
 		
 		//Set the activity title to the name of the event.
-		setTitle(event.getName());
+		setTitle("Event: "+event.getName());
 		
 		TextView[] textViews = {
 				(TextView) findViewById(R.id.event_viewer_time_textView),
