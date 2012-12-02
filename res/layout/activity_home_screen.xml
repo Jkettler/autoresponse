@@ -13,25 +13,31 @@
         android:text="@string/create_event" />
 
     <Button
-        android:id="@+id/view_event_button"
+        android:id="@+id/new_create_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/create_event_button"
-        android:layout_alignLeft="@+id/create_event_button"
-        android:layout_alignRight="@+id/create_event_button"
+        android:layout_below="@id/create_event_button"
         android:layout_centerHorizontal="true"
-        android:onClick="viewEvents"
-        android:text="@string/view_events" />
+        android:layout_centerVertical="true"
+        android:onClick="newCreateEvent"
+        android:text="@string/new_create_event" />
 
     <Button
         android:id="@+id/exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/create_event_button"
-        android:layout_alignRight="@+id/create_event_button"
-        android:layout_below="@+id/create_event_button"
+        android:layout_below="@+id/new_create_event_button"
         android:layout_centerHorizontal="true"
         android:onClick="exitApp"
         android:text="@string/exit" />
+
+    <Button
+        android:id="@+id/view_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/create_event_button"
+        android:layout_alignLeft="@+id/create_event_button"
+        android:onClick="viewEvents"
+        android:text="@string/view_events" />
 
 </RelativeLayout>

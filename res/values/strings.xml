@@ -4,6 +4,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_home_screen">Auto-Response</string>
     <string name="create_event">Create Event</string>
+    <string name="new_create_event">New Create Event</string>
     <string name="view_events">View Events</string>
     <string name="exit">Exit</string>
     <string name="title_activity_event_list">My Events:</string>
@@ -50,6 +51,20 @@
     <string name="location_list_empty_text">You don\'t have any locations stored. Store your current location using the menu button.</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_help">Help</string>
+    
+    <string name="prompt1">Events</string>
+    <string name="prompt2">Responses</string>
+    <string-array name = "all_events">
+        <item>Entered Known Wifi</item>
+        <item>Received a Text While Driving</item>
+        <item>Received a Text</item>
+        <item>Received a Call</item>
+    </string-array>
+    
+    <string-array name = "all_responses">
+        <item>Respond with a text message</item>
+        <item>Adjust Phone Settings</item>
+    </string-array>
     
     <string name="help_text_create_event">
 

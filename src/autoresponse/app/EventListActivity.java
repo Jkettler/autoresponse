@@ -109,6 +109,39 @@ public class EventListActivity extends Activity {
 		alert.show();
 
 	}
+	
+	private void newCreateEvent() {
+		Log.d(TAG, "Create event menu-button clicked");
+
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Enter a name");
+
+		// Set an EditText view to get user input
+		final EditText input = new EditText(this);
+		alert.setView(input);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String eventName = input.getText().toString();
+				Intent intent = new Intent(getBaseContext(),
+						ConditionSelectorActivity.class);
+				intent.putExtra(EVENT_NAME, eventName);
+				Log.d(TAG, "Starting ConditionSelector with event name: "
+						+ eventName);
+				startActivity(intent);
+			}
+		});
+
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
+
+		alert.show();
+
+	}
 
 	private void populateEventList() {
 		mEvents = PreferenceHandler.getEventList(this);
