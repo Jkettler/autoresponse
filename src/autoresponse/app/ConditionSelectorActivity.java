@@ -2,13 +2,15 @@ package autoresponse.app;
 
 import java.util.Calendar;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import autoresponse.util.AutoResponseEvent;
@@ -31,6 +33,10 @@ public class ConditionSelectorActivity extends Activity {
 	private CheckBox mIncomingTextBox;
 	private TimePicker mStartTimePicker;
 	private TimePicker mEndTimePicker;
+	private LinearLayout mTimePicker;
+	private LinearLayout mDaysOne;
+	private LinearLayout mDaysTwo;
+	private LinearLayout mOptions;
 	
 	private AutoResponseEvent mEvent; 
 	
@@ -55,6 +61,11 @@ public class ConditionSelectorActivity extends Activity {
 		mIncomingTextBox = (CheckBox) findViewById(R.id.incoming_text_checkbox);
 		mStartTimePicker = (TimePicker) findViewById(R.id.start_time_picker);
 		mEndTimePicker = (TimePicker) findViewById(R.id.end_time_picker);
+		mTimePicker = (LinearLayout)findViewById(R.id.time_picker);
+		mDaysOne = (LinearLayout)findViewById(R.id.days_one);
+		mDaysTwo = (LinearLayout)findViewById(R.id.days_two);
+		mOptions = (LinearLayout)findViewById(R.id.options);
+		
 		
 		//Fill in UI with details from event passed via intent
 		mEvent = getIntent().getParcelableExtra(AutoResponseEvent.EVENT_KEY);
@@ -76,6 +87,9 @@ public class ConditionSelectorActivity extends Activity {
 			mEndTimePicker.setCurrentHour(mEvent.getEndMinuteOfDay()/60);
 			mEndTimePicker.setCurrentMinute(mEvent.getEndMinuteOfDay()%60);
 		}
+		
+		dayCheckboxClicked(null);
+		timeCheckboxClicked(null);
 	}
 	
 	public char getCharValue(boolean value) {
@@ -83,6 +97,26 @@ public class ConditionSelectorActivity extends Activity {
 			return '1';
 		}
 		return '0';
+	}
+	
+	public void dayCheckboxClicked(View view) {
+		if(mDayBox.isChecked()) {
+			mDaysOne.setVisibility(View.VISIBLE);
+			mDaysTwo.setVisibility(View.VISIBLE);
+		} else {
+			mDaysOne.setVisibility(View.GONE);
+			mDaysTwo.setVisibility(View.GONE);
+		}
+		mOptions.refreshDrawableState();
+	}
+	
+	public void timeCheckboxClicked(View view) {
+		if(mTimeBox.isChecked()) {
+			mTimePicker.setVisibility(View.VISIBLE);
+		} else {
+			mTimePicker.setVisibility(View.GONE);
+		}
+		mOptions.refreshDrawableState();
 	}
 	
 	public void createCondition(View view) {

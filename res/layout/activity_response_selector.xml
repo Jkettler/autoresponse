@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -12,13 +13,15 @@
             android:id="@+id/phone_mode_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/change_phone_mode" />
+            android:text="@string/change_phone_mode" 
+            android:onClick="changeModeBoxClicked"/>
 
         <RadioGroup
             android:id="@+id/phone_mode_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp" >
+            android:layout_marginLeft="30dp" 
+            android:visibility="gone">
 
             <RadioButton
                 android:id="@+id/normal_radio"
@@ -44,13 +47,15 @@
             android:id="@+id/reminder_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/reminder" />
+            android:text="@string/reminder" 
+            android:onClick="reminderBoxClicked"/>
 
         <TimePicker
             android:id="@+id/reminder_time_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp" />
+            android:layout_marginLeft="30dp" 
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -61,7 +66,8 @@
                 android:id="@+id/text_response_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_response_" />
+                android:text="@string/text_response_" 
+                android:onClick="textResponseBoxClicked"/>
 
             <EditText
                 android:id="@+id/text_response_edit"
@@ -69,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:ems="10"
-                android:inputType="textMultiLine" >
+                android:inputType="textMultiLine" 
+                android:visibility="gone">
             </EditText>
             
         </LinearLayout>

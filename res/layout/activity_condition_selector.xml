@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -25,25 +26,28 @@
             android:id="@+id/time_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time" />
+            android:text="@string/time" 
+            android:onClick="timeCheckboxClicked"/>
 
         <LinearLayout
+            android:id="@+id/time_picker"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/start_time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp" 
-                android:text="Start time:" />
+                android:text="Start time:"/>
             
             <TimePicker
                 android:id="@+id/start_time_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp" />
+                android:layout_marginLeft="30dp"/>
 
             <TextView
                 android:id="@+id/end_time_text_view"
@@ -56,20 +60,23 @@
                 android:id="@+id/end_time_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp" />
+                android:layout_marginLeft="30dp"/>
         </LinearLayout>
 
         <CheckBox
             android:id="@+id/day_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/day" />
+            android:text="@string/day" 
+            android:onClick="dayCheckboxClicked"/>
         
         <LinearLayout
-        	android:layout_marginLeft="30dp"
+            android:id="@+id/days_one"
+            android:layout_marginLeft="30dp"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:orientation="horizontal" >
+        	android:orientation="horizontal" 
+        	android:visibility="gone">
             
         	<CheckBox
             android:id="@+id/monday_checkbox"
@@ -94,10 +101,12 @@
         </LinearLayout>
         	
         <LinearLayout
+            android:id="@+id/days_two"
             android:layout_marginLeft="30dp"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:orientation="horizontal" >
+        	android:orientation="horizontal" 
+        	android:visibility="gone">
         	
         	<CheckBox
             android:id="@+id/friday_checkbox"

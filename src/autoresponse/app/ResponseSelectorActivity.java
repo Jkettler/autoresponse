@@ -1,13 +1,14 @@
 package autoresponse.app;
 
-import android.media.AudioManager;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -27,6 +28,7 @@ public class ResponseSelectorActivity extends Activity {
 	private TimePicker reminderTimePicker;
 	private EditText mTextResponseEditText;
 	private RadioGroup mPhoneModeRadioGroup;
+	private LinearLayout mOptions;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class ResponseSelectorActivity extends Activity {
 		reminderTimePicker = (TimePicker) findViewById(R.id.reminder_time_picker);
 		mTextResponseEditText = (EditText) findViewById(R.id.text_response_edit);
 		mPhoneModeRadioGroup = (RadioGroup) findViewById(R.id.phone_mode_radio);
+		
+		mOptions = (LinearLayout) findViewById(R.id.options);
 
 		Log.d(TAG, "Response Selector started for event with name: " + mEvent.getName());
 		
@@ -72,8 +76,38 @@ public class ResponseSelectorActivity extends Activity {
 				button.setChecked(true);
 			}
 		}
+		changeModeBoxClicked(null);
+		reminderBoxClicked(null);
+		textResponseBoxClicked(null);
 	}
 
+	public void changeModeBoxClicked(View view) {
+		if(mPhoneModeCheckbox.isChecked()) {
+			mPhoneModeRadioGroup.setVisibility(View.VISIBLE);
+		} else {
+			mPhoneModeRadioGroup.setVisibility(View.GONE);
+		}
+		mOptions.refreshDrawableState();
+	}
+
+	public void reminderBoxClicked(View view) {
+		if(mReminderCheckbox.isChecked()) {
+			reminderTimePicker.setVisibility(View.VISIBLE);
+		} else {
+			reminderTimePicker.setVisibility(View.GONE);
+		}
+		mOptions.refreshDrawableState();
+	}
+	
+	public void textResponseBoxClicked(View view) {
+		if(mTextResponseCheckbox.isChecked()) {
+			mTextResponseEditText.setVisibility(View.VISIBLE);
+		} else {
+			mTextResponseEditText.setVisibility(View.GONE);
+		}
+		mOptions.refreshDrawableState();
+	}
+	
 	public void createEvent(View view) {
 
 		Log.d(TAG, "Ok button clicked, creating event.");
