@@ -14,16 +14,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ABOUT"
-            android:textColor="#FF909090" />
+            android:textColor="#FFFFFFFF" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="#FF909090" />
+            android:background="#FFFFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#FF000000"
             android:text="AutoResponse lets you define conditions and then have the phone behave a certain way when they are met." />
 
         <TextView
@@ -31,17 +33,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="EVENTS"
-            android:textColor="#FF909090" />
+            android:textColor="#FFFFFFFF" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="#FF909090" />
+            android:background="#FFFFFFFF" />
 
         <TextView
             android:id="@+id/help_textView_create_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#FF000000"
             android:text="@string/help_text_create_event" />
 
         <!--
@@ -71,21 +75,25 @@
             android:layout_height="wrap_content"
             android:text="VIEW/EDIT"
             android:layout_marginTop="8dp"
-            android:textColor="#FF909090" />
+            android:textColor="#FFFFFFFF" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="#FF909090" />
+            android:background="#FFFFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#FF000000"
             android:text="To view an event, tap on it in the event list." />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#FF000000"
             android:text="You can edit a particular event by hitting the menu button while viewing it." />
     </LinearLayout>
 
