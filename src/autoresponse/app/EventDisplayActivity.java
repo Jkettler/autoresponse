@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import autoresponse.util.AutoResponseEvent;
@@ -90,7 +92,6 @@ public class EventDisplayActivity extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		// TODO
 		case R.id.edit_event_context_menu_item:
 			editConditions();
 			return true;
@@ -100,8 +101,44 @@ public class EventDisplayActivity extends Activity {
 		case R.id.delete_event_menu_item:
 			showDialog(DIALOG_DELETE_ID);
 			return true;
+		case R.id.edit_event_name_menu_item:
+			rename();
+			return true;
 		}
 		return false;
+	}
+
+	private void rename() {
+		//build a dialog with the current name in a text field and highlighted
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Enter a name");
+
+		// Set an EditText view to get user input
+		final EditText input = new EditText(this);
+		input.setText(event.getName());
+		input.setSelectAllOnFocus(true);
+		alert.setView(input);
+
+		alert.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Context context = getBaseContext();
+				PreferenceHandler.deleteEvent(context, event.getName());
+				event.setName(input.getText().toString());
+				PreferenceHandler.writeEvent(context, event);
+				Intent intent = new Intent(context, EventListActivity.class);
+				startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+			}
+		});
+
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
+
+		alert.show();
+		
 	}
 
 	protected Dialog onCreateDialog(int id) {
