@@ -5,4 +5,9 @@
         android:icon="@drawable/ic_menu_add"
         android:title="Create New Event">
     </item>
+        <item
+        android:id="@+id/help_menu_item"
+        android:icon="@drawable/ic_menu_help"
+        android:title="Help">
+    </item>
 </menu>

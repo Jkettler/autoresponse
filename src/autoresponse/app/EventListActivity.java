@@ -69,6 +69,10 @@ public class EventListActivity extends Activity {
 		case R.id.new_event_menu_item:
 			createEvent();
 			return true;
+		case R.id.help_menu_item:
+			Intent intent = new Intent(this, HelpActivity.class);
+			startActivity(intent);
+			return true;
 		}
 		return false;
 	}

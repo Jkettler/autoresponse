@@ -1,0 +1,91 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ABOUT"
+            android:textColor="#FF909090" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AutoResponse lets you define conditions and then have the phone behave a certain way when they are met." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="EVENTS"
+            android:textColor="#FF909090" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TextView
+            android:id="@+id/help_textView_create_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_text_create_event" />
+
+        <!--
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To create a response event, go to the main screen and choose \&apos;Create New Event\&apos; from the menu. " />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You will be prompted to name your event, and then you will be able to choose the conditions for your response." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next, you define a response, which will be triggered when all conditions are met." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your response can be to send a text message to the last person who texted you, change the phone&apos;s ringer mode, or to set up a reminder for later." />
+        -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIEW/EDIT"
+            android:layout_marginTop="8dp"
+            android:textColor="#FF909090" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To view an event, tap on it in the event list." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can edit a particular event by hitting the menu button while viewing it." />
+    </LinearLayout>
+
+</ScrollView>

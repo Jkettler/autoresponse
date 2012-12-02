@@ -48,6 +48,16 @@
     <string name="delete_question">Are you sure you want to delete this event?</string>
     <string name="event_list_empty_text">You don\'t have any events yet. Create one using the menu button.</string>
     <string name="location_list_empty_text">You don\'t have any locations stored. Store your current location using the menu button.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_help">Help</string>
     
+    <string name="help_text_create_event">
+
+        To create a response event, go to the main screen and choose \'Create New Event\' from the menu.
+        You will be prompted to name your event, and then you will be able to choose the conditions for your response.
+        Next, you define a response, which will be triggered when all conditions are met.
+        Your response can be to send a text message to the last person who texted you, change the phone\'s ringer mode, or to set up a reminder for later.
+
+    </string>
 
 </resources>
