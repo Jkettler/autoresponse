@@ -3,7 +3,8 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@drawable/background2">
 
     <ListView
         android:id="@+id/location_list_view"
