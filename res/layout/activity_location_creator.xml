@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:shrinkColumns="0" 
     android:padding="8dp"
+    android:background="@drawable/background2"
     >
 
     <TableRow

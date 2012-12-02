@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" 
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@drawable/background2">
 
     <ListView
         android:id="@+id/event_list_view"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
         android:visibility="visible"
+        android:background="#88666666"
         />
     
     <TextView 
