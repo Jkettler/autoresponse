@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import autoresponse.util.AutoResponseEvent;
 import autoresponse.util.MyService;
 import autoresponse.util.PreferenceHandler;
@@ -116,6 +117,11 @@ public class ResponseSelectorActivity extends Activity {
 		mEvent.setDisplayReminder(mReminderCheckbox.isChecked());
 		mEvent.setSendTextResponse(mTextResponseCheckbox.isChecked());
 
+		if(!mEvent.isChangePhoneMode() && !mEvent.isDisplayReminder() && !mEvent.isSendTextResponse()){
+			Toast.makeText(this, "Please provide a response.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		if (mEvent.isDisplayReminder()) {
 			mEvent.setReminderTime(reminderTimePicker.getCurrentHour() * 60
 					+ reminderTimePicker.getCurrentMinute());
