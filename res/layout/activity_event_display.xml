@@ -15,13 +15,13 @@
             android:id="@+id/event_viewer_condition_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FF909090"
+            android:textColor="#FFFFFFFF"
             android:text="CONDITIONS"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="#FF909090" />
+            android:background="#FFFFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="Time:"
                  />
 
@@ -41,6 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="Day: "
                  />
 
@@ -49,6 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="Location: "
                  />
 
@@ -57,6 +63,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="If a text is recieved."
                  />
         </LinearLayout>
@@ -71,13 +79,13 @@
             android:id="@+id/event_viewer_response_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FF909090"
+            android:textColor="#FFFFFFFF"
             android:layout_marginTop="8dp"
             android:text="RESPONSE" />
          <View
             android:layout_width="match_parent"
             android:layout_height="2dip"
-            android:background="#FF909090" />
+            android:background="#FFFFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,6 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="Set Phone Mode:"
                  />
 
@@ -97,6 +107,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="Reminder at:"
                  />
 
@@ -105,6 +117,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="16dp"
+            	android:textColor="#FF000000"
                 android:text="Send text message with contents:"
                  />
         </LinearLayout>

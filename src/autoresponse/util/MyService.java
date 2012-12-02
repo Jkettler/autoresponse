@@ -175,7 +175,7 @@ public class MyService extends Service {
 			public void onStatusChanged(String provider, int status,Bundle extras) {}
 		};
 		
-		int millisec = 10*1000; // 10 seconds
+		int millisec = 300*1000; // 5 minutes
 		int meters = 30;
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, millisec, meters, locationListener);
 		// Location updates could be fine tuned to use less power. LocationManager.PASSIVE_PROVIDER 

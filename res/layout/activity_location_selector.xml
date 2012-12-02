@@ -10,7 +10,8 @@
         android:id="@+id/location_list_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice" 
+        android:background="#88666666"/>
     
     <TextView
         android:id="@+id/location_list_empty_textView"
