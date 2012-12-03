@@ -122,6 +122,25 @@ public class MyService extends Service {
 			Log.d(TAG, "Registering LocationManager");
 			registerLocationManager();
 		}
+		
+		// Special case: if an event is created with a time condition
+		// consider the time condition met if it is any time within
+		// the time window, not just the starting time.
+		for(AutoResponseEvent event : events) {
+			if(event.isIfTime()) {
+				int[] time = getTimeOfDay();
+				int currentTime = (time[HOUR]*60 + time[MINUTE]);
+				if(event.getStartMinuteOfDay() <= currentTime && event.getEndMinuteOfDay() >= currentTime) {
+					// temporarily disable the ifTime condition to see if all other
+					// conditions are met. if conditions are met, execute response.
+					event.setIfTime(false);
+					if(conditionsMet(event)) {
+						executeResponse(event);
+					}
+					event.setIfTime(true);
+				}
+			}
+		}
 	}
 	
 	@Override
