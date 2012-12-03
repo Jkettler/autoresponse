@@ -68,7 +68,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_response_" 
-                android:onClick="textResponseBoxClicked"/>
+                android:onClick="textResponseBoxClicked"
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/text_response_edit"

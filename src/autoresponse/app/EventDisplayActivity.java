@@ -40,6 +40,7 @@ public class EventDisplayActivity extends Activity {
 		setTitle("Event: "+event.getName());
 		
 		TextView[] textViews = {
+				(TextView) findViewById(R.id.event_viewer_driving),
 				(TextView) findViewById(R.id.event_viewer_time_textView),
 				(TextView) findViewById(R.id.event_viewer_day_textView),
 				(TextView) findViewById(R.id.event_viewer_location_textView),
@@ -49,12 +50,13 @@ public class EventDisplayActivity extends Activity {
 				(TextView) findViewById(R.id.event_viewer_reminder_textView),
 				(TextView) findViewById(R.id.event_viewer_textResponse_textView) };
 
-		boolean[] displayTextView = { event.isIfTime(), event.isIfDay(),
+		boolean[] displayTextView = { event.isIfDriving(), event.isIfTime(), event.isIfDay(),
 				event.isIfLocation(), event.isIfRecieveText(),
 				event.isChangePhoneMode(), event.isDisplayReminder(),
 				event.isSendTextResponse() };
 
-		String[] details = { event.getTimeString(), event.getDayString(),
+		// Note: no string for driving condition. Should this be fixed?
+		String[] details = { "", event.getTimeString(), event.getDayString(),
 				event.getLocationString(), event.getRecieveTextString(),
 				event.getChangePhoneModeString(),
 				event.getDisplayReminderString(),

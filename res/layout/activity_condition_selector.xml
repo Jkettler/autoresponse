@@ -13,7 +13,6 @@
         <CheckBox
             android:id="@+id/driving_checkbox"
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
             android:text="@string/driving" />
 

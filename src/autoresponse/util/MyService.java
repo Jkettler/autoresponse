@@ -90,6 +90,8 @@ public class MyService extends Service {
 		respondToSMS = false;
 		smsText = "";
 		
+		speed = 0;
+		
 		boolean timeReceiverNeeded = false;
 		boolean smsReceiverNeeded = false;
 		boolean locationManagerNeeded = false;
@@ -191,7 +193,9 @@ public class MyService extends Service {
 				// This is the method that will be called when the location has changed
 				latitude = location.getLatitude();
 				longitude = location.getLongitude();
-				speed = location.getSpeed();
+				if(location.hasSpeed()) {
+					speed = location.getSpeed();
+				}
 				notificationReceived();
 			}
 			// Other methods are note used, but must be implemented.
@@ -339,8 +343,10 @@ public class MyService extends Service {
 			}
 		}
 		if(event.isIfDriving()) {
-			// TODO: Implement this for Beta release?
-			ifDriving = true;
+			if(speed > 6.7056) {
+				// last known speed > 15mph
+				ifDriving = true;
+			}
 		}
 		if(event.isIfLocation()) {
 			// Note: distance between a and b = sqrt((a.x - b.x)^2 + (a.y - b.y)^2)
