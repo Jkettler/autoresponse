@@ -126,7 +126,7 @@ public class ConditionSelectorActivity extends Activity {
 		// TODO Add days to UI and then pull them in too.
 		if(mEvent == null){
 			mEvent = new AutoResponseEvent();
-			mEvent.setName(getIntent().getStringExtra(HomeScreenActivity.EVENT_NAME));
+			mEvent.setName(getIntent().getStringExtra(EventListActivity.EVENT_NAME));
 		}
 		mEvent.setIfDay(mDayBox.isChecked());
 		mEvent.setIfDriving(mDrivingBox.isChecked());

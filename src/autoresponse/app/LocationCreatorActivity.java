@@ -6,8 +6,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -38,9 +41,8 @@ public class LocationCreatorActivity extends Activity {
 		Intent intent = getIntent();
 		mEvent = intent.getParcelableExtra(AutoResponseEvent.EVENT_KEY);
 	
-		registerLocationManager();
 	}
-	
+
 	public void registerLocationManager() {
 		// TODO figure out why the location manager still seems to be running after onPause/onDestroy is called
 		locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
@@ -76,6 +78,50 @@ public class LocationCreatorActivity extends Activity {
 		}
 	}
 	
+	//Code taken from http://stackoverflow.com/questions/10311834/android-dev-how-to-check-if-location-services-are-enabled
+	//and modified to fit the code hree.
+	public boolean checkForLocationAwareness(){
+		LocationManager lm = null;
+		
+	    boolean gps_enabled,network_enabled;
+        if(lm==null)
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        try{
+	        gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	        network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		    return gps_enabled || network_enabled;
+	        
+        }catch(Exception ex){
+        	Log.d(TAG, "Exception thrown while checking if location available");
+        	return false;
+        }
+	}
+	
+	private void displayLocationAlert(){
+		final Context context = this;
+	    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setMessage("Location awareness is disabled, go to settings?");
+   
+        dialog.setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+               Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+               context.startActivity(myIntent);
+               //get gps
+           }
+           });
+        dialog.setNegativeButton("Don't use location", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+            	//Go back to the condition selector.
+            	mEvent.setIfLocation(false);
+            	Intent intent = new Intent(context, ConditionSelectorActivity.class);
+            	intent.putExtra(AutoResponseEvent.EVENT_KEY, mEvent);
+        		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        });
+        dialog.show();
+	}
+	
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "entering onDestroy");
@@ -96,7 +142,15 @@ public class LocationCreatorActivity extends Activity {
 	public void onResume() {
 		Log.d(TAG, "entering onResume");
 		super.onResume();
-		registerLocationManager();
+		
+		boolean haveLocation = checkForLocationAwareness();
+		Log.d(TAG, "LocationCreator haveLocation = "+haveLocation);
+		
+		if(haveLocation){
+			registerLocationManager();
+		} else {
+			displayLocationAlert();
+		}
 	}
 	
 	public void onAddCurrentLocation(View view) {
