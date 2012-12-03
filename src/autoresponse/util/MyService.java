@@ -373,28 +373,46 @@ public class MyService extends Service {
 		int currentTime = (time[HOUR]*60 + time[MINUTE]);
 //		boolean isInTimeWindow = (event.getStartMinuteOfDay() <= currentTime && 
 //								event.getEndMinuteOfDay() >= currentTime);
-		boolean isStartTime = ((event.getStartMinuteOfDay() == currentTime) && event.isIfTime()) ||
-								!event.isIfTime();
-		boolean isEndTime = ((event.getEndMinuteOfDay() == currentTime) && event.isIfTime()) ||
-								!event.isIfTime();
-			
-		if(event.isChangePhoneMode() && isStartTime) {
-			Log.d(TAG, "changing phone mode");
-			changeRingerMode(event.getPhoneMode());
-			pendingRingerModeChanges.add(new int[]{event.getEndMinuteOfDay(), previousRingerMode});
-		}
-		if(event.isDisplayReminder() && isStartTime) {
-			Log.d(TAG, "setting a reminder");
-			setReminder(event.getReminderTime());
-		}
-		if(event.isSendTextResponse() && isStartTime) {
-			Log.d(TAG, "setting respondToSMS = true");
-			smsText = event.getTextResponse();
-			respondToSMS = true;
-		}
-		if(event.isSendTextResponse() && isEndTime) {
-			Log.d(TAG, "setting respondToSMS = false");
-			respondToSMS = false;
+		boolean registerTime = event.isIfTime();
+		boolean isStartTime = (event.getStartMinuteOfDay() == currentTime);
+		boolean isEndTime = (event.getEndMinuteOfDay() == currentTime);
+		
+		//copypasta, and not the most elegant if statement ever, but the logic
+		//is a bit easier to follow and it fixes a bug, so...
+		if(registerTime){
+			if(event.isChangePhoneMode() && isStartTime) {
+				Log.d(TAG, "changing phone mode");
+				changeRingerMode(event.getPhoneMode());
+				pendingRingerModeChanges.add(new int[]{event.getEndMinuteOfDay(), previousRingerMode});
+			}
+			if(event.isDisplayReminder() && isStartTime) {
+				Log.d(TAG, "setting a reminder");
+				setReminder(event.getReminderTime());
+			}
+			if(event.isSendTextResponse() && isStartTime) {
+				Log.d(TAG, "setting respondToSMS = true");
+				smsText = event.getTextResponse();
+				respondToSMS = true;
+			} 
+			if(event.isSendTextResponse() && isEndTime) {
+				Log.d(TAG, "setting respondToSMS = false");
+				respondToSMS = false;
+			}
+		} else {
+			if(event.isChangePhoneMode()) {
+				Log.d(TAG, "changing phone mode");
+				changeRingerMode(event.getPhoneMode());
+				pendingRingerModeChanges.add(new int[]{event.getEndMinuteOfDay(), previousRingerMode});
+			}
+			if(event.isDisplayReminder()) {
+				Log.d(TAG, "setting a reminder");
+				setReminder(event.getReminderTime());
+			}
+			if(event.isSendTextResponse()) {
+				Log.d(TAG, "setting respondToSMS = true");
+				smsText = event.getTextResponse();
+				respondToSMS = true;
+			} 
 		}
 			
 	}
@@ -423,6 +441,7 @@ public class MyService extends Service {
 	public void sendTextMessage(String text, String phoneNumber) {
 		// Send a text message to a specified phone number.
 //		Toast.makeText(this, "Send a text message", Toast.LENGTH_SHORT).show();
+		Log.d(TAG, "Sending message: "+text);
 		SmsManager smsManager = SmsManager.getDefault();
 		smsManager.sendTextMessage(phoneNumber, null, text, null, null);
 	}
