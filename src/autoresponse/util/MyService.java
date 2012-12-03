@@ -329,6 +329,7 @@ public class MyService extends Service {
 			// assuming event.getTimeOfDay() is the time of day in minutes
 			int[] time = getTimeOfDay();
 			int currentTime = (time[HOUR]*60 + time[MINUTE]);
+			Log.d(TAG, event.getName()+" currentTime"+currentTime+" "+event.getStartMinuteOfDay()+" "+event.getEndMinuteOfDay());
 			if(event.getStartMinuteOfDay() <= currentTime && event.getEndMinuteOfDay() >= currentTime) {
 				ifTime = true;
 			}
@@ -378,6 +379,7 @@ public class MyService extends Service {
 			smsText = event.getTextResponse();
 		}
 		
+		Log.d(TAG, event.isIfTime()+" "+ifTime);
 		
 		return 	(event.isIfDriving() == ifDriving) &&
 				(event.isIfTime() == ifTime) &&
@@ -399,8 +401,11 @@ public class MyService extends Service {
 		int hour = Integer.parseInt(time[0]);
 		int min = Integer.parseInt(time[1]);
 		int sec = Integer.parseInt(time[2]);
-		if(split[4].equals("PM")) {
+		if(split[4].equals("PM") && hour != 12) {
 			hour += 12;
+		}
+		if(split[4].equals("AM") && hour == 12) {
+			hour -= 12;
 		}
 		return new int[]{hour, min, sec};
 	}
@@ -468,7 +473,7 @@ public class MyService extends Service {
 	@SuppressWarnings("deprecation")
 	public void triggerReminder(String message) {
 		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		Notification note=new Notification(R.drawable.ic_launcher,"Status message!",System.currentTimeMillis());
+		Notification note=new Notification(R.drawable.temp_icon,"Status message!",System.currentTimeMillis());
 		PendingIntent i=PendingIntent.getActivity(this, 0, new Intent(this, NotificationMessage.class),0);
 		note.setLatestEventInfo(this, "Auto Response", message, i);
 		note.vibrate=new long[] {500L, 200L, 200L, 500L}; 
