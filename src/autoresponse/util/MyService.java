@@ -64,6 +64,9 @@ public class MyService extends Service {
 	private static double latitude;
 	private static double longitude;
 	
+	// last known speed
+	private static float speed;
+	
 	// last phone number that sent an SMS to this device
 	private static String lastReceivedSMSAddress;
 	
@@ -169,6 +172,7 @@ public class MyService extends Service {
 				// This is the method that will be called when the location has changed
 				latitude = location.getLatitude();
 				longitude = location.getLongitude();
+				speed = location.getSpeed();
 				notificationReceived();
 			}
 			// Other methods are note used, but must be implemented.
@@ -227,18 +231,31 @@ public class MyService extends Service {
 							lastReceivedSMSAddress = message.getDisplayOriginatingAddress();
 						}
 					}
-					
-					if(respondToSMS) {
-						Log.d(TAG, "sending text message");
-						sendTextMessage(smsText, lastReceivedSMSAddress);
-					}
 				}
-				notificationReceived();
+				smsNotificationReceived();
 			}
 		};
 		
 		IntentFilter smsIntent = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 		registerReceiver(smsReceiver, smsIntent);
+	}
+	
+	public void smsNotificationReceived() {
+		// Note this is a special case of a notification being received because
+		// Sms received is an instantanious event, not an environment condition
+		// that can be checked.
+		
+		Log.d(TAG, "entering smsNotificationReceived");
+		
+		for(AutoResponseEvent event : events) {
+			// Check to see if event conditions are matched. If so, execute the response.
+			if(conditionsMet(event)) {
+				Log.d(TAG, "Conditions met for event: "+event.getName());
+				executeResponse(event);
+				sendTextMessage(smsText, lastReceivedSMSAddress);
+				Log.d(TAG, "sending text message");
+			}
+		}
 	}
 	
 	public void notificationReceived() {
@@ -416,7 +433,6 @@ public class MyService extends Service {
 		}
 			
 	}
-	
 	
 	public void setReminder(int time) {
 		// Note: time is an int in minutes since midnight. e.g. 1:01AM = 61

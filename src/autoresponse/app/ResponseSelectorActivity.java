@@ -77,6 +77,11 @@ public class ResponseSelectorActivity extends Activity {
 				button.setChecked(true);
 			}
 		}
+		
+		if(mEvent.isIfRecieveText()) {
+			mTextResponseCheckbox.setVisibility(View.VISIBLE);
+		}
+		
 		changeModeBoxClicked(null);
 		reminderBoxClicked(null);
 		textResponseBoxClicked(null);
