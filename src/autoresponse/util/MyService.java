@@ -255,6 +255,7 @@ public class MyService extends Service {
 						}
 					}
 				}
+				// TODO: create a contacts filter to only auto respond to some people
 				smsNotificationReceived();
 			}
 		};
@@ -298,7 +299,7 @@ public class MyService extends Service {
 		for(int i=0; i < pendingReminders.size(); i++) {
 			Object[] message = pendingReminders.get(i);
 			if(currentTimeInMinutes == (Integer)message[0]) {
-				triggerReminder((String)message[1]);
+				triggerReminder((String)message[1], (String)message[2]);
 				pendingReminders.remove(i);
 				i--;
 			}
@@ -329,7 +330,6 @@ public class MyService extends Service {
 			// assuming event.getTimeOfDay() is the time of day in minutes
 			int[] time = getTimeOfDay();
 			int currentTime = (time[HOUR]*60 + time[MINUTE]);
-			Log.d(TAG, event.getName()+" currentTime"+currentTime+" "+event.getStartMinuteOfDay()+" "+event.getEndMinuteOfDay());
 			if(event.getStartMinuteOfDay() <= currentTime && event.getEndMinuteOfDay() >= currentTime) {
 				ifTime = true;
 			}
@@ -346,6 +346,7 @@ public class MyService extends Service {
 		if(event.isIfDriving()) {
 			if(speed > 6.7056) {
 				// last known speed > 15mph
+				// TODO Make this speed customizable in settings?
 				ifDriving = true;
 			}
 		}
@@ -378,8 +379,6 @@ public class MyService extends Service {
 			ifReceiveText = true;
 			smsText = event.getTextResponse();
 		}
-		
-		Log.d(TAG, event.isIfTime()+" "+ifTime);
 		
 		return 	(event.isIfDriving() == ifDriving) &&
 				(event.isIfTime() == ifTime) &&
@@ -434,7 +433,7 @@ public class MyService extends Service {
 			}
 			if(event.isDisplayReminder() && isStartTime) {
 				Log.d(TAG, "setting a reminder");
-				setReminder(event.getReminderTime());
+				setReminder(event.getReminderTime(), event.getName());
 			}
 			if(event.isSendTextResponse() && isStartTime) {
 				Log.d(TAG, "setting respondToSMS = true");
@@ -453,7 +452,7 @@ public class MyService extends Service {
 			}
 			if(event.isDisplayReminder()) {
 				Log.d(TAG, "setting a reminder");
-				setReminder(event.getReminderTime());
+				setReminder(event.getReminderTime(), event.getName());
 			}
 			if(event.isSendTextResponse()) {
 				Log.d(TAG, "setting respondToSMS = true");
@@ -464,14 +463,14 @@ public class MyService extends Service {
 			
 	}
 	
-	public void setReminder(int time) {
+	public void setReminder(int time, String eventName) {
 		// Note: time is an int in minutes since midnight. e.g. 1:01AM = 61
 		// TODO Beta: make the reminder text customizable.
-		pendingReminders.add(new Object[]{time, "Hey, I'm reminding you to do something!"});
+		pendingReminders.add(new Object[]{time, "Hey, I'm reminding you to do something!", eventName});
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void triggerReminder(String message) {
+	public void triggerReminder(String message, String eventName) {
 		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		Notification note=new Notification(R.drawable.temp_icon,"Status message!",System.currentTimeMillis());
 		PendingIntent i=PendingIntent.getActivity(this, 0, new Intent(this, NotificationMessage.class),0);
@@ -479,9 +478,9 @@ public class MyService extends Service {
 		note.vibrate=new long[] {500L, 200L, 200L, 500L}; 
 		note.flags|=Notification.FLAG_AUTO_CANCEL;
 		
-		mgr.notify(reminderID, note);
+		int id = eventName.hashCode();
 		
-		reminderID++;
+		mgr.notify(id, note);
 	}
 	
 	public void sendTextMessage(String text, String phoneNumber) {
