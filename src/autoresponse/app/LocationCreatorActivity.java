@@ -126,16 +126,24 @@ public class LocationCreatorActivity extends Activity {
 	public void onDestroy() {
 		Log.d(TAG, "entering onDestroy");
 		super.onDestroy();
-		locationManager.removeUpdates(locationListener1);
-		locationManager.removeUpdates(locationListener2);
+		if(locationManager!=null && locationListener1 !=null){
+			locationManager.removeUpdates(locationListener1);
+		}
+		if(locationManager!=null && locationListener2 !=null){
+			locationManager.removeUpdates(locationListener2);
+		}
 	}
 	
 	@Override
 	public void onPause() {
 		Log.d(TAG, "entering onPause");
 		super.onPause();
-		locationManager.removeUpdates(locationListener1);
-		locationManager.removeUpdates(locationListener2);
+		if(locationManager!=null && locationListener1 !=null){
+			locationManager.removeUpdates(locationListener1);
+		}
+		if(locationManager!=null && locationListener2 !=null){
+			locationManager.removeUpdates(locationListener2);
+		}
 	}
 	
 	@Override
@@ -183,7 +191,7 @@ public class LocationCreatorActivity extends Activity {
 			}
 
 			if(latitude == -1 || longitude == -1) {
-				Toast.makeText(getApplicationContext(), "Waiting for location to load..."+latitude+" "+longitude, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Waiting for location to load...", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			

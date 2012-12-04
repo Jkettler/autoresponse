@@ -276,8 +276,10 @@ public class MyService extends Service {
 			if(conditionsMet(event)) {
 				Log.d(TAG, "Conditions met for event: "+event.getName());
 				executeResponse(event);
-				sendTextMessage(smsText, lastReceivedSMSAddress);
-				Log.d(TAG, "sending text message");
+				if(event.isSendTextResponse()){
+					sendTextMessage(smsText, lastReceivedSMSAddress);
+					Log.d(TAG, "sending text message");
+				}
 			}
 		}
 	}
@@ -316,7 +318,7 @@ public class MyService extends Service {
 	
 	public boolean conditionsMet(AutoResponseEvent event) {
 		// if any of the conditions are false, return false
-		Log.d(TAG, "entering conditionsMet");
+		Log.d(TAG, "entering conditionsMet for event: "+event.getName());
 
 		boolean ifDriving = false;
 		boolean ifTime = false;
@@ -378,6 +380,7 @@ public class MyService extends Service {
 		if(event.isIfRecieveText()) {
 			ifReceiveText = true;
 			smsText = event.getTextResponse();
+			Log.d(TAG, "Setting text message response value to: "+smsText);
 		}
 		
 		return 	(event.isIfDriving() == ifDriving) &&
