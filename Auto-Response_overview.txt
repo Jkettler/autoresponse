@@ -1,0 +1,86 @@
+App Name: Auto-Response
+
+----------------------------------------------------------------
+Team:
+John Lynch     JRL2755
+Jimmy Kettler  JBK97
+Kevin Kinney   KPK297
+
+----------------------------------------------------------------
+Features completed:
+Features are catagorized as either as conditions/responses for 
+events or miscellaneous
+
+From prototype:
+ Completed:
+   Conditions:
+    - day
+    - time
+    - location
+    - incoming text
+    - driving
+   Responses:
+    - change phone mode
+    - set reminders
+    - automate text responses
+   Miscellaneous
+    - ability to add and save locations
+    - ability to combine conditions
+Uncompleted Features:
+   Miscellaneous
+    - delay in auto responding to texts, allowing user to 
+      override. (optional feature)
+
+Not from prototype:
+    -deletion of events
+    -renaming of events
+    -view a single event 
+    -A slight refactoring of the UI:
+        -Our homescreen (as well as other parts of the app) wasn't very much in 
+        line with the Android Developer Guidelines, so we eliminated it and made
+        the event list the entry point for the app. 
+        -In addition, we removed some superfluous buttons (go back, exit the 
+        app) and moved a lot of functionality away from buttons and into the 
+        menus, and modified the UI from the protoype somewhat in an effort to
+        make it more user friendly.
+
+----------------------------------------------------------------
+References:
+
+Code for the name entry dialog box was based off of this: http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
+The code for changing phone modes was based off of this: http://www.androidsnippets.com/change-phone-mode-to-silent-vibrate-normal  
+The location creator interface has checks to see if location awareness is enabled, which are based off of some of the code from this stackoverflow post: http://stackoverflow.com/questions/10311834/android-dev-how-to-check-if-location-services-are-enabled
+This example was used as a basis for making the AutoResponseEvent that is passed around by the activities via the Parcelable interface: http://shri.blog.kraya.co.uk/2010/04/26/android-parcel-data-to-pass-between-activities-using-parcelable-classes/
+Our code for using SharedPreferences, location, and use of services was based off of the slides posted on the schedule as well as the tutorials.
+
+----------------------------------------------------------------
+Classes written:
+
+ EventListActivity
+  - An activity for listing events to be viewed and edited.
+  - If no events are found, text explaining how to create them is displayed.
+  - Entry point for the app.
+ ConditionSelectorActivity
+  - An activity for selecting conditions for an event.
+ LocationCreatorActivity
+  - An activity used save the phone's current location.
+ LocationSelectorActivity
+  - An activity to select locations from a list to be used as 
+    conditions.
+ ResponseSelectorActivity
+   - An activity to select responses for a set of conditions.
+ EventDisplayActivity
+   - An activity for viewing an event selected from the list of events in 
+   EventListActivity. Menu allows users to edit, delete, or rename the event.
+ HelpActivity
+   - An activity that briefly explains how to use the app.
+ AutoResponseEvent
+  - A data structure to store event/response info in.
+ MyService
+  - A background service to monitor conditions and execute 
+    responses.
+ NotificationMessage
+  - An empty class that will later be used to define a response 
+    when status bar notifications are clicked.
+ PreferenceHandler
+  - A set of functions used to easily write/read saved preferences
