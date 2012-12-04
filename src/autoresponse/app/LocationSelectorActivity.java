@@ -22,7 +22,6 @@ public class LocationSelectorActivity extends Activity {
 	private ListView mEventListView;
 
 	private String selectedLocationName;
-	private boolean locationSelected = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

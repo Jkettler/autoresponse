@@ -366,11 +366,11 @@ public class MyService extends Service {
 			float distance = result[0];
 			
 			savedRadius *= 1609.34;
-			if(savedRadius > distance) {
-				//makeToast("Location within target radius. ("+distance+")");
+			if(savedRadius >= distance) {
+				Log.d(TAG, "Location within target radius. ( current distance: "+distance+", radius: "+savedRadius+")");
 				ifLocation = true;
 			} else {
-				//makeToast("Location outside target radius. ("+distance+")");
+				Log.d(TAG, "Location outside target radius. ( current distance: "+distance+", radius: "+savedRadius+")");
 				ifLocation = false;
 			}
 		}
