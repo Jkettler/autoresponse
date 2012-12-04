@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".EventListActivity"
-            android:label="@string/title_activity_home_screen" >
+            android:label="@string/title_activity_home_screen" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,28 +29,32 @@
         </activity>
         <activity
             android:name=".ConditionSelectorActivity"
-            android:label="@string/title_activity_condition_selector" >
+            android:label="@string/title_activity_condition_selector" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ResponseSelectorActivity"
-            android:label="@string/title_activity_response_selector" >
+            android:label="@string/title_activity_response_selector" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LocationSelectorActivity"
-            android:label="@string/title_activity_location_selector" >
+            android:label="@string/title_activity_location_selector" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LocationCreatorActivity"
-            android:label="@string/title_activity_location_creator" >
+            android:label="@string/title_activity_location_creator" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -61,14 +66,16 @@
 
         <activity
             android:name=".EventDisplayActivity"
-            android:label="@string/title_activity_event_display" >
+            android:label="@string/title_activity_event_display" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".HelpActivity"
-            android:label="@string/title_activity_help" >
+            android:label="@string/title_activity_help"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
